@@ -26,7 +26,7 @@ namespace NetCDI
 		public static void Start( object obj )
 		{
 			scanHierarchy( obj.GetType() );
-			injectMembers( obj, getInjectableMembers( obj ) );
+			injectMembers( obj, getInjectableMembers( obj ), new List<Type>() );
 		}
 
 		private static IEnumerable<MemberInfo> getInjectableMembers( object obj )
@@ -36,22 +36,22 @@ namespace NetCDI
 					  .Where( m => getAttribute<InjectAttribute>(m) != null );
 		}
 
-		private static void injectMembers( object parent, IEnumerable<MemberInfo> objs )
+		private static void injectMembers( object parent, IEnumerable<MemberInfo> objs, List<Type> parentTypesList  )
 		{
 			//# We should inject our members that have producers first.
 			//# Say one of our properties uses a logger that is an inject member,
 			//# but the member has not been injected. This would cause a NullPointerException.
 			//# Obviously we can't handle every possible case at this early stage of development
 			//# but this should be a good first step.
-
 			objs = objs.OrderBy( o => !_knownProducers.ContainsKey( getMemberType( o ) ) );
-
+			
 			foreach ( var member in objs )
 			{
+				parentTypesList.Add( parent.GetType() );
 				var type = getMemberType( member );
 				object value = null;
 
-				if ( type == parent.GetType() )
+				if ( parentTypesList.Contains(type) )
 				{
 					throw new NetCDIException( "Injecting the member " + member + " inside " + parent + " would cause infinite recursion." );
 				}
@@ -89,6 +89,11 @@ namespace NetCDI
 				{
 					_applicationScopedObjects[ type ] = value;
 				}
+				
+				//# Recurse
+				
+				injectMembers( value, getInjectableMembers( value ), parentTypesList );
+				parentTypesList.Clear();
 			}
 		}
 
@@ -129,9 +134,6 @@ namespace NetCDI
 			}
 
 			setMemberValue( parent, member, value );
-			//# Recurse
-			injectMembers( value, getInjectableMembers( value ) );
-
 			return value;
 		}
 
