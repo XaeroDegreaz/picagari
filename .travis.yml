@@ -1,8 +1,18 @@
-language: c
+language: objective-c
+
+env:
+ global:
+  - EnableNuGetPackageRestore=true 
+ matrix:
+  - MONO_VERSION="3.4.0"
+
+before_install:
+ - wget "http://download.xamarin.com/MonoFrameworkMDK/Macx86/MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg"
+ - sudo installer -pkg "MonoFramework-MDK-${MONO_VERSION}.macos10.xamarin.x86.pkg" -target /
  
 install:
-  - sudo apt-get install mono-devel mono-gmcs nunit-console
- 
+  - sudo apt-get install nunit-console
+
 script:
   - xbuild CI.proj
   - nunit-console ./NUnitTests/bin/Debug/NUnitTests.dll
