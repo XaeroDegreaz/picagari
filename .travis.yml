@@ -5,7 +5,7 @@ env:
   - EnableNuGetPackageRestore=true 
 
 before_install:
- - sudo add-apt-repository ppa:directhex/monoxide && sudo apt-get update
+ - sudo add-apt-repository ppa:directhex/monoxide -y && sudo apt-get update
  - mozroots --import --sync
  
 install:
