@@ -1,0 +1,15 @@
+language: c
+
+env:
+ global:
+  - EnableNuGetPackageRestore=true 
+
+install:
+ - sudo add-apt-repository ppa:directhex/monoxide -y && sudo apt-get update
+ - sudo apt-get install mono-devel mono-gmcs nunit-console
+ - mozroots --import --sync
+ - mono .nuget/NuGet.exe restore net-cdi.sln
+ 
+script:
+ - xbuild CI.proj
+ - nunit-console ./NUnitTests/bin/Debug/NUnitTests.dll
