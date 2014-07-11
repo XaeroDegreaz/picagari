@@ -6,7 +6,7 @@ A zero-configuration dependency injection library for .Net
 Full-blown documentation & examples are coming, but for now here's an example taken from one of the test fixtures.
 It highlights the no-configuration-needed workflow, and shows you how to get underwat with NetCDI immediately!
 
-```
+```C#
 using log4net;
 using NetCDI;
 using NetCDI.Attributes;
