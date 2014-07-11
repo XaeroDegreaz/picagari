@@ -1,7 +1,7 @@
 NetCDI
 =======
 
-A zero-configuration dependency injection library for .Net
+A zero-configuration contexts and dependency injection library for .Net
 
 Full-blown documentation & examples are coming, but for now here's an example taken from one of the test fixtures.
 It highlights the no-configuration-needed workflow, and shows you how to get underway with NetCDI immediately!
