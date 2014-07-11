@@ -12,7 +12,8 @@ namespace NetCDI.Attributes
 	/// a singleton that you need not call statically, and can inject
 	/// as many times as you like.
 	/// </summary>
-	public class ApplicationScopedAttribute : Attribute
+	[AttributeUsage( AttributeTargets.Class )]
+	public sealed class ApplicationScopedAttribute : Attribute
 	{
 	}
 }

@@ -11,7 +11,7 @@ namespace NetCDI.Attributes
 	/// abstract class.
 	/// </summary>
 	[AttributeUsage( AttributeTargets.Field | AttributeTargets.Property )]
-	public class InjectAttribute : Attribute
+	public sealed class InjectAttribute : Attribute
 	{
 		/// <summary>
 		/// You may specify specific type of implementation

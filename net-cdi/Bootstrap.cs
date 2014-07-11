@@ -33,7 +33,7 @@ namespace NetCDI
 		{
 			return obj.GetType()
 					  .GetMembers( BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic )
-					  .Where( m => m.GetCustomAttribute( typeof ( InjectAttribute ), false ) != null );
+					  .Where( m => getAttribute<InjectAttribute>(m) != null );
 		}
 
 		private static void injectMembers( object parent, IEnumerable<MemberInfo> objs )
@@ -70,7 +70,12 @@ namespace NetCDI
 				if ( _knownProducers.ContainsKey( type ) )
 				{
 					var producer = _knownProducers[ type ];
-					value = producer.Invoke( null, new[] {parent} );
+					var injectionPoint = new InjectionPoint (
+						parent,
+						member,
+						getAttribute<InjectAttribute>(member)
+					);
+					value = producer.Invoke( null, new [] {injectionPoint} );
 
 					setMemberValue( parent, member, value );
 				}
@@ -80,18 +85,23 @@ namespace NetCDI
 					value = getInjectedValue( parent, member, ref type );
 				}
 
-				if ( type.GetCustomAttribute( typeof ( ApplicationScopedAttribute ), true ) != null )
+				if ( getAttribute<ApplicationScopedAttribute>(type) != null )
 				{
 					_applicationScopedObjects[ type ] = value;
 				}
 			}
 		}
 
+		private static T getAttribute<T> (MemberInfo member) where T : Attribute
+		{
+			return (T)member.GetCustomAttribute (typeof(T), false);
+		}
+
 		private static object getInjectedValue( object parent, MemberInfo member, ref Type type )
 		{
 			if ( type.IsInterface || type.IsAbstract )
 			{
-				var injectAttribute = (InjectAttribute) member.GetCustomAttribute( typeof ( InjectAttribute ) );
+				var injectAttribute = getAttribute<InjectAttribute>(member);
 				setInjectedType( ref type, injectAttribute );
 			}
 
@@ -115,7 +125,7 @@ namespace NetCDI
 
 			if ( value == null )
 			{
-				throw new NetCDIException( "NetCDI somehow came up injecting a null value for  " + type + "." );
+				throw new NetCDIException( "NetCDI somehow came up injecting a null value for " + type + ". Is there a producer for this type?" );
 			}
 
 			setMemberValue( parent, member, value );
@@ -138,7 +148,7 @@ namespace NetCDI
 				}
 				else
 				{
-					var defaultImplementation = allImplementations.FirstOrDefault( t => t.GetCustomAttribute( typeof ( DefaultAttribute ), false ) != null );
+					var defaultImplementation = allImplementations.FirstOrDefault( t => getAttribute<DefaultAttribute>(t) != null );
 
 					if ( defaultImplementation == null )
 					{
@@ -157,10 +167,22 @@ namespace NetCDI
 								   .Where( t => !_knownTypes.Contains( t ) )
 								   .ToList();
 			var producers = newTypes.SelectMany( t => t.GetMethods()
-													   .Where( n => n.GetCustomAttribute( typeof ( ProducesAttribute ) ) != null ) );
+													   .Where( n => getAttribute<ProducesAttribute>(n) != null ) );
 
 			_knownTypes.AddRange( newTypes );
-			producers.ToList().ForEach( m => _knownProducers.Add( m.ReturnType, m ) );
+			producers.ToList().ForEach( delegate(MethodInfo m)
+				{
+					var productType = getAttribute<ProducesAttribute>(m).QualifiedType ?? m.ReturnType;
+					try 
+					{
+						_knownProducers.Add( productType, m );
+					}
+					catch(ArgumentException e)
+					{
+						var known = _knownProducers[productType];
+						throw new NetCDIException("There can only be one producer for " + productType + ", and there is already one at "+ known.ReflectedType+"."+known.Name, e);
+					}
+				} );
 		}
 
 		private static Type getMemberType( MemberInfo member )

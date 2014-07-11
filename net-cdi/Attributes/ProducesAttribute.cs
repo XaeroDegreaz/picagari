@@ -20,15 +20,18 @@ namespace NetCDI.Attributes
 	public class ProducesAttribute : Attribute
 	{
 		/// <summary>
-		/// Not yet implemented.
+		/// The highest <see cref="Type"/> in a hierarchy this method will produce for.
+		/// The return value of the method may be the exact type, or an inherited type.
+		/// If you plan on returning the same type in the method as the ProductType,
+		/// there is no need to set this property, as this is the default behaviour.
 		/// </summary>
-		public Type AlternateType;
+		public Type QualifiedType;
 
 		public ProducesAttribute() : this( null ) {}
 
-		public ProducesAttribute( Type alternateType )
+		public ProducesAttribute( Type qualifiedType )
 		{
-			AlternateType = alternateType;
+			QualifiedType = qualifiedType;
 		}
 	}
 }

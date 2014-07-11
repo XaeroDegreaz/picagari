@@ -11,5 +11,6 @@ namespace NetCDI.Attributes
 	/// should there be multiple implementations of the same interface,
 	/// or abstract class.
 	/// </summary>
-	public class DefaultAttribute : Attribute {}
+	[AttributeUsage( AttributeTargets.Class )]
+	public sealed class DefaultAttribute : Attribute {}
 }
