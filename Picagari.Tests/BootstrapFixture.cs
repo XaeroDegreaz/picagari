@@ -39,18 +39,18 @@ namespace Picagari.Tests
 		public void AllInjectedMembersShouldInjectRecursivelyAndBeNonNull()
 		{
 			Assert.IsNotNull( goodClass );
-			Assert.IsNotNull( goodClass.topClass );
-			Assert.IsNotNull( goodClass.topClass.Property );
-			Assert.IsNotNull( goodClass.topClass.Property2 );
-			Assert.IsNotNull( goodClass.topClass.Property.Field );
-			Assert.IsNotNull( goodClass.topClass.Property.Field2 );
+			Assert.IsNotNull( goodClass.TopClass );
+			Assert.IsNotNull( goodClass.TopClass.Property );
+			Assert.IsNotNull( goodClass.TopClass.Property2 );
+			Assert.IsNotNull( goodClass.TopClass.Property.Field );
+			Assert.IsNotNull( goodClass.TopClass.Property.Field2 );
 		}
 
 		[Test]
 		public void MembersOfInjectedMembersNotMarkedAsInjectShouldBeNull()
 		{
-			Assert.IsNull( goodClass.nullTopClass );
-			Assert.IsNull( goodClass.topClass.Property.nullField3 );
+			Assert.IsNull( goodClass.NullTopClass );
+			Assert.IsNull( goodClass.TopClass.Property.NullField3 );
 		}
 
 		[Test]
@@ -73,6 +73,13 @@ namespace Picagari.Tests
 		public void OnlyOneInstanceOfApplicationScopedTypes()
 		{
 			Assert.AreSame( applicationScoped1, applicationScoped2 );
+		}
+
+		[Test]
+		public void DoesPostConstructFireOnMarkedMethods()
+		{
+			Assert.True( goodClass.DidPostConstructFire );
+			Assert.True( goodClass.TopClass.Property.Field.DeepInject.DidPostConstructFire );
 		}
 	}
 }

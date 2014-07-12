@@ -37,11 +37,12 @@
   <ItemGroup>
     <Compile Include="Attributes\ApplicationScopedAttribute.cs" />
     <Compile Include="Attributes\DefaultAttribute.cs" />
+    <Compile Include="Attributes\PostConstructAttribute.cs" />
     <Compile Include="Attributes\ProducesAttribute.cs" />
     <Compile Include="Bootstrap.cs" />
     <Compile Include="InjectionPoint.cs" />
     <Compile Include="Attributes\InjectAttribute.cs" />
-    <Compile Include="Exceptions\NetCDIException.cs" />
+    <Compile Include="Exceptions\PicagariException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

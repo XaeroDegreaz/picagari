@@ -1,4 +1,5 @@
-﻿using Picagari.Attributes;
+﻿using log4net;
+using Picagari.Attributes;
 
 namespace Picagari.Tests.Helpers
 {
@@ -14,17 +15,28 @@ namespace Picagari.Tests.Helpers
 	public class GoodClass
 	{
 		[Inject]
-		public TopLevelClass topClass;
+		public TopLevelClass TopClass { get; private set; }
 
-		public TopLevelClass nullTopClass;
+		[Inject]
+		public ILog log;
+
+		public TopLevelClass NullTopClass { get; private set; }
+
+		public bool DidPostConstructFire { get; private set; }
+
+		[PostConstruct]
+		private void OnConstruct()
+		{
+			DidPostConstructFire = true;
+		}
 
 		public class TopLevelClass
 		{
 			[Inject]
-			public B Property { get; set; }
+			public B Property { get; private set; }
 
 			[Inject]
-			public C Property2 { get; set; }
+			public C Property2 { get; private set; }
 		}
 
 		public class B
@@ -34,15 +46,24 @@ namespace Picagari.Tests.Helpers
 			[Inject]
 			public C Field2;
 
-			public C nullField3;
+			public C NullField3;
 		}
 
 		public class C
 		{
 			[Inject]
-			public D DeepInject { get; set; }
+			public D DeepInject { get; private set; }
 		}
 
-		public class D { }
+		public class D
+		{
+			public bool DidPostConstructFire { get; private set; }
+
+			[PostConstruct]
+			private void OnConstruct()
+			{
+				DidPostConstructFire = true;
+			}
+		}
 	}
 }

@@ -17,7 +17,7 @@ namespace Picagari.Attributes
 		/// You may specify specific type of implementation
 		/// of an interface or abstract class by setting this property.
 		/// </summary>
-		public Type AlternateType { get; set; }
+		public Type AlternateType { get; private set; }
 		/// <summary>
 		/// Inject the default implementation of the type associated with the
 		/// annotated member.

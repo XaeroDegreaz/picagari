@@ -21,7 +21,7 @@ namespace Picagari.Attributes
 		/// If you plan on returning the same type in the method as the ProductType,
 		/// there is no need to set this property, as this is the default behaviour.
 		/// </summary>
-		public Type QualifiedType;
+		public Type QualifiedType { get; private set; }
 
 		public ProducesAttribute() : this( null ) {}
 

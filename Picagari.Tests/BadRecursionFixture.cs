@@ -11,35 +11,35 @@ namespace Picagari.Tests
 	[TestFixture]
 	internal class BadRecursionFixture
 	{
-		[ExpectedException( typeof ( NetCDIException ) )]
+		[ExpectedException( typeof ( PicagariException ) )]
 		[Test]
 		public void MembersInjectingThemselvesShouldThrowException()
 		{
 			Bootstrap.Start( new BadRecursiveClass() );
 		}
 
-		[ExpectedException( typeof ( NetCDIException ) )]
+		[ExpectedException( typeof ( PicagariException ) )]
 		[Test]
 		public void MembersInjectingThemselvesShouldThrowException2()
 		{
 			Bootstrap.Start( new BadRecursiveClass.BadRecursiveClass2() );
 		}
 
-		[ExpectedException( typeof ( NetCDIException ) )]
+		[ExpectedException( typeof ( PicagariException ) )]
 		[Test]
 		public void MembersInjectingThemselvesShouldThrowException3()
 		{
 			Bootstrap.Start( new BadRecursiveClass.BadRecursiveClass3() );
 		}
 
-		[ExpectedException( typeof ( NetCDIException ) )]
+		[ExpectedException( typeof ( PicagariException ) )]
 		[Test]
 		public void MembersInjectingThemselvesShouldThrowException5()
 		{
 			Bootstrap.Start( new BadRecursiveClass.BadRecursiveClass5() );
 		}
 
-		[ExpectedException( typeof ( NetCDIException ) )]
+		[ExpectedException( typeof ( PicagariException ) )]
 		[Test]
 		public void MembersInjectingThemselvesShouldThrowException6()
 		{
