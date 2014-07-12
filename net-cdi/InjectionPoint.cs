@@ -1,8 +1,7 @@
-﻿using System;
-using System.Reflection;
-using NetCDI.Attributes;
+﻿using System.Reflection;
+using Picagari.Attributes;
 
-namespace NetCDI
+namespace Picagari
 {
 	/// <summary>
 	/// An instance of this class will be passed to any producers you specify.
@@ -27,7 +26,7 @@ namespace NetCDI
 		public InjectAttribute InjectAttribute { get { return _injectAtribute; } }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="NetCDI.InjectionPoint"/> class.
+		/// Initializes a new instance of the <see cref="InjectionPoint"/> class.
 		/// </summary>
 		/// <param name="parentObject">The instance of the parent class of the member getting injected.</param>
 		/// <param name="member">The member that is getting a value injected into it.</param>

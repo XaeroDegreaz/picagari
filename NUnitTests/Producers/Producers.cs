@@ -1,10 +1,10 @@
 ﻿using log4net;
 using log4net.Config;
-using NetCDI;
-using NetCDI.Attributes;
+using Picagari.Attributes;
+
 [assembly: XmlConfigurator(Watch = true)]
 
-namespace NUnitTests.Producers
+namespace Picagari.Tests.Producers
 {
 	internal class Producers
 	{

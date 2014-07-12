@@ -3,14 +3,16 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "net-cdi", "net-cdi\net-cdi.csproj", "{E711068D-3EF9-4D48-A3A8-037024C568AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picagari", "net-cdi\Picagari.csproj", "{E711068D-3EF9-4D48-A3A8-037024C568AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NUnitTests", "NUnitTests\NUnitTests.csproj", "{D7FC9F19-2538-454F-B266-71DBDF961997}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picagari.Tests", "NUnitTests\Picagari.Tests.csproj", "{D7FC9F19-2538-454F-B266-71DBDF961997}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A3183DC4-5751-478B-BBB1-96498605BB1A}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picagari.Examples", "Examples\Picagari.Examples.csproj", "{8CEDC2E9-2520-4B09-B798-0ACC9B731570}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -26,6 +28,10 @@ Global
 		{D7FC9F19-2538-454F-B266-71DBDF961997}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7FC9F19-2538-454F-B266-71DBDF961997}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7FC9F19-2538-454F-B266-71DBDF961997}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8CEDC2E9-2520-4B09-B798-0ACC9B731570}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8CEDC2E9-2520-4B09-B798-0ACC9B731570}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8CEDC2E9-2520-4B09-B798-0ACC9B731570}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8CEDC2E9-2520-4B09-B798-0ACC9B731570}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

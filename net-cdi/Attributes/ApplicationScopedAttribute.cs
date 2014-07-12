@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NetCDI.Attributes
+namespace Picagari.Attributes
 {
 	/// <summary>
 	/// This attribute will ensure that classes that use it will only ever be

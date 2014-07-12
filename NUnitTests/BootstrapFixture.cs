@@ -1,10 +1,9 @@
 ﻿using log4net;
-using NetCDI;
-using NetCDI.Attributes;
 using NUnit.Framework;
-using NUnitTests.Helpers;
+using Picagari.Attributes;
+using Picagari.Tests.Helpers;
 
-namespace NUnitTests
+namespace Picagari.Tests
 {
 	/// <summary>
 	/// Tests the feature-set of NetCDI.

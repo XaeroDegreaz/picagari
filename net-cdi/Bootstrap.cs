@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using NetCDI.Attributes;
-using NetCDI.Exceptions;
+using Picagari.Attributes;
+using Picagari.Exceptions;
 
-namespace NetCDI
+namespace Picagari
 {
 	/// <summary>
 	/// The Bootstrap class handles injecting all marked fields and properties
@@ -22,11 +21,13 @@ namespace NetCDI
 		/// Start recursively constructing and injecting members in this object.
 		/// </summary>
 		/// <param name="obj">The object in which to begin injecting marked members.</param>
+		/// <returns>Return the object after injection is compled. Useful for getting a reference to manually constructed objects that get bootstrapped.</returns>
 		/// <exception cref="NetCDIException">Throws when requirements for injection are not satisfied.</exception>
-		public static void Start( object obj )
+		public static object Start( object obj )
 		{
 			scanHierarchy( obj.GetType() );
 			injectMembers( obj, getInjectableMembers( obj ), new List<Type>() );
+			return obj;
 		}
 
 		private static IEnumerable<MemberInfo> getInjectableMembers( object obj )
@@ -38,13 +39,6 @@ namespace NetCDI
 
 		private static void injectMembers( object parent, IEnumerable<MemberInfo> objs, List<Type> parentTypesList  )
 		{
-			//# We should inject our members that have producers first.
-			//# Say one of our properties uses a logger that is an inject member,
-			//# but the member has not been injected. This would cause a NullPointerException.
-			//# Obviously we can't handle every possible case at this early stage of development
-			//# but this should be a good first step.
-			objs = objs.OrderBy( o => !_knownProducers.ContainsKey( getMemberType( o ) ) );
-			
 			foreach ( var member in objs )
 			{
 				parentTypesList.Add( parent.GetType() );

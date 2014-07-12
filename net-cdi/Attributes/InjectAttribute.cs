@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NetCDI.Attributes
+namespace Picagari.Attributes
 {
 
 	/// <summary>

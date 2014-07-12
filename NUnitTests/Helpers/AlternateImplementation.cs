@@ -1,7 +1,7 @@
 ﻿using log4net;
-using NetCDI.Attributes;
+using Picagari.Attributes;
 
-namespace NUnitTests.Helpers
+namespace Picagari.Tests.Helpers
 {
 	public class AlternateImplementation : ITestInterface
 	{

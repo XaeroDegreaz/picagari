@@ -1,6 +1,6 @@
-﻿using NetCDI.Attributes;
+﻿using Picagari.Attributes;
 
-namespace NUnitTests.Helpers
+namespace Picagari.Tests.Helpers
 {
 	/// <summary>
 	/// Various class combinations that eventually recurse upon themselves.

@@ -1,6 +1,6 @@
-﻿using NetCDI.Attributes;
+﻿using Picagari.Attributes;
 
-namespace NUnitTests.Helpers
+namespace Picagari.Tests.Helpers
 {
 	/// <summary>
 	/// For the sake of not having lots of class files littered everywhere,

@@ -1,6 +1,6 @@
-﻿using NetCDI.Attributes;
+﻿using Picagari.Attributes;
 
-namespace NUnitTests.Helpers
+namespace Picagari.Tests.Helpers
 {
 	[ApplicationScoped]
 	class ApplicationScopedClass

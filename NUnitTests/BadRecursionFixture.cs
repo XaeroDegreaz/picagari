@@ -1,9 +1,8 @@
-﻿using NetCDI;
-using NetCDI.Exceptions;
-using NUnit.Framework;
-using NUnitTests.Helpers;
+﻿using NUnit.Framework;
+using Picagari.Exceptions;
+using Picagari.Tests.Helpers;
 
-namespace NUnitTests
+namespace Picagari.Tests
 {
 	/// <summary>
 	/// Various tests with bad recursion. See <see cref="BadRecursiveClass"/> comments to see order
