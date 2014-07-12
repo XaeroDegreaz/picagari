@@ -100,6 +100,7 @@ public class Pilot
 | `[Produces]`          	| Used on a method, you tell Picagari that you want to use that method for producing the object before you inject it. This is good for when you want to use some logic to decide which implementation of a certain object type you'd like to return (like in the last example). 	|
 | `[Default]`           	| Classes marked with this attribute will be injected by default should there be more than one.implementation of a class, or interface. This ia required on at least one of those classes.                                                                                      	|
 | `[ApplicationScoped]` 	| Classes marked with this attribute will only ever be constructed once. They essentially become reusable singletons, that can be injected over, and over but keep the same reference.                                                                                          	|
+| `[PostConstruct]` 	| A method marked with this attribute will fire after the instance object is fully constructed, and injected. |
 
 ## Saweet! How do I get started?
 The usual methods:
