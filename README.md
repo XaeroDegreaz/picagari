@@ -1,89 +1,142 @@
-NetCDI
-=======
+Picagari - The Dependency Injection Library for .Net / Mono
+=
+## Synopsis
 
-A zero-configuration contexts and dependency injection library for .Net
+Picagari (Malay for _syringe_) is an Inversion of Control (IoC), Contexts and Dependency Injection (CDI) library for .Net / Mono.
+A high level example of what Picagari does would be to allow developers to quickly create classes, without having to create factories for constructing objects, or repeatedly having to manually construct objects, and their dependencies (so on, and so forth). It also helps with the decoupling of interfaces and their implementations.
 
-Full-blown documentation & examples are coming, but for now here's an example taken from one of the test fixtures.
-It highlights the no-configuration-needed workflow, and shows you how to get underway with NetCDI immediately!
+There are no configurations to write -- just start by adding the `[Inject]` attributes to your fields / properties, and then use `Bootstrap.Start` on the object that owns them.
 
+## Basic Code Example
+With some clever usage of the `[Inject]` attribute on your fields and properties you can:
+#### Stop doing this:
 ```C#
-using log4net;
-using NetCDI;
-using NetCDI.Attributes;
-using NUnit.Framework;
-using NUnitTests.Helpers;
-
-namespace NUnitTests
+public class Pilot
 {
-	/// <summary>
-	/// Tests the feature-set of NetCDI.
-	/// </summary>
-	[TestFixture]
-	internal class BootstrapFixture
-	{
-		[Inject]
-		private ILog log;
+	//# Dependency
+    public SpaceShip SpaceShip;
+	//# Dependency
+    public Uniform Uniform;
 
-		[Inject]
-		private GoodClass goodClass;
+    public Pilot()
+    {
+	    SpaceShip = new SpaceShip();
+	    SpaceShip.Engine = new Engine();
+	    SpaceShip.Chassis = new Chassis();
+	    SpaceShip.Weapon = new Weapon();
 
-		[Inject]
-		private ITestInterface defaultImplementation;
+		Uniform = new Uniform();
+	    Uniform.Shirt = new Shirt();
+		//# Etc, etc
 
-		[Inject( typeof ( AlternateImplementation ) )]
-		private ITestInterface alternateImplementation;
-
-		[Inject]
-		private ApplicationScopedClass applicationScoped1;
-
-		[Inject]
-		private ApplicationScopedClass applicationScoped2;
-
-		[TestFixtureSetUp]
-		public void Setup()
-		{
-			Bootstrap.Start( this );
-		}
-
-		[Test]
-		public void AllInjectedMembersShouldInjectRecursivelyAndBeNonNull()
-		{
-			Assert.IsNotNull( goodClass );
-			Assert.IsNotNull( goodClass.topClass );
-			Assert.IsNotNull( goodClass.topClass.Property );
-			Assert.IsNotNull( goodClass.topClass.Property2 );
-			Assert.IsNotNull( goodClass.topClass.Property.Field );
-			Assert.IsNotNull( goodClass.topClass.Property.Field2 );
-		}
-
-		[Test]
-		public void MembersOfInjectedMembersNotMarkedAsInjectShouldBeNull()
-		{
-			Assert.IsNull( goodClass.nullTopClass );
-			Assert.IsNull( goodClass.topClass.Property.nullField3 );
-		}
-
-		[Test]
-		public void ProducersCanProduceQualifiedTypes()
-		{
-			Assert.IsNotNull( log );
-			log.Debug( "Yep, logger is working." );
-		}
-
-		[Test]
-		public void CanInjectDefaultAndQualifiedTypes()
-		{
-			Assert.True( defaultImplementation != null && defaultImplementation.GetType() == typeof ( DefaultImplementation ) );
-			Assert.True( alternateImplementation != null && alternateImplementation.GetType() == typeof ( AlternateImplementation ) );
-			defaultImplementation.LogSomething();
-			alternateImplementation.LogSomething();
-		}
-
-		[Test]
-		public void OnlyOneInstanceOfApplicationScopedTypes()
-		{
-			Assert.AreSame( applicationScoped1, applicationScoped2 );
-		}
-	}
+	    Uniform.ZipUp();
+	    SpaceShip.FlyOut();
+    }
 }
 ```
+
+#### And stop doing this:
+```C#
+public class Pilot
+{
+	//# Dependency
+    public SpaceShip SpaceShip;
+	//# Dependency
+    public Uniform Uniform;
+
+    public Pilot()
+    {
+	    SpaceShip = new SpaceShip( new Engine(), new Chassis(), new Weapon() );
+	    Uniform = new Uniform( new Shirt() );
+
+	    Uniform.ZipUp();
+	    SpaceShip.FlyOut();
+    }
+}
+```
+
+#Now, do _this:_
+```C#
+public class Pilot
+{
+	[Inject]
+    public SpaceShip SpaceShip;
+	[Inject]
+    public Uniform Uniform;
+
+    public Pilot()
+    {
+        //# Construct this class' dependencies (and dependencies' dependencies recursively)
+        Bootstrap.Start( this );
+	    Uniform.ZipUp();
+	    SpaceShip.FlyOut();
+    }
+}
+```
+
+You can also use `Bootstrap.Start()` with other objects:
+```C#
+public class Pilot
+{
+	//# Dependency
+    public SpaceShip SpaceShip;
+	[Inject]
+    public Uniform Uniform;
+
+    public Pilot()
+    {
+	    Bootstrap.Start( this );
+	    SpaceShip = Bootstrap.Start( new SpaceShip() );
+	    Uniform.ZipUp();
+	    SpaceShip.FlyOut();
+    }
+}
+```
+## Attributes
+
+|                       	|                                                                                                                                                                                                                                                                               	|
+|-----------------------	|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| `[Inject]`            	| Constructs, the member, and any of the member's `[Inject]` marked dependencies recursively.                                                                                                                                                                                   	|
+| `[Produces]`          	| Used on a method, you tell Picagari that you want to use that method for producing the object before you inject it. This is good for when you want to use some logic to decide which implementation of a certain object type you'd like to return (like in the last example). 	|
+| `[Default]`           	| Classes marked with this attribute will be injected by default should there be more than one.implementation of a class, or interface. This ia required on at least one of those classes.                                                                                      	|
+| `[ApplicationScoped]` 	| Classes marked with this attribute will only ever be constructed once. They essentially become reusable singletons, that can be injected over, and over but keep the same reference.                                                                                          	|
+
+## Saweet! How do I get started?
+The usual methods:
+* Download the [latest binaries](https://github.com/XaeroDegreaz/picagari/releases), and reference them in your project.
+* Checkout the repo, and build from source, or reference the project.
+* Read the [Wiki](https://github.com/XaeroDegreaz/picagari/wiki).
+* Look at some of the [example classes](https://github.com/XaeroDegreaz/picagari/tree/master/Picagari.Examples).
+* Inject away!
+
+## Motivation for the project.
+
+tl;dr - Because IoC dependency injection is completely awesome.
+
+I started working in a pure Java shop that uses Java's CDI framework, and I was fascinated by a number of things:
+* How powerful it was.
+* How much time was saved.
+* How reusable my code became, as I was basically able to compartmentalize & isolate modules of code, and just inject them freely into any object that required them.
+
+I began looking around to see if there were any such frameworks for .Net, the _true_ language of love. I found a few really good ones, namely:
+* [Ninject](http://www.ninject.org/)
+* [StructureMap](http://structuremap.github.io/structuremap/)
+
+However, my problem with these frameworks is that they rely on some initial configuration, and even more configuration as your project grows. While these frameworks do what they are supposed to do, I felt that they required far too much configuration, and the learning curve was just too steep for something that could be done in a more simple way.
+
+Picagari uses absolutely no configurations of any kind. I've followed the the experience that I've had with Java's CDI framework, and stripped away configuration.
+
+## Tests
+
+There are NUnit tests available in the solution. They test a variety of things from feature functionality, to infinite inject recursion issues (such as injecting the same type into itself...).
+
+## Contribute?
+
+* If you'd like to contribute to the project, simply fork it, hack it, and send a merge request.
+* Post bugs / suggestions in the [issue tracker](https://github.com/XaeroDegreaz/picagari/issues).
+
+## License
+
+I'm not a lawyer, so in plain English:
+
+You can use this library in any project, be it personal, commercial or open source.
