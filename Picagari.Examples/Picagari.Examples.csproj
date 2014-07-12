@@ -43,7 +43,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\net-cdi\Picagari.csproj">
+    <ProjectReference Include="..\Picagari\Picagari.csproj">
       <Project>{E711068D-3EF9-4D48-A3A8-037024C568AC}</Project>
       <Name>Picagari</Name>
     </ProjectReference>
