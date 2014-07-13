@@ -94,29 +94,29 @@ namespace Picagari
 			}
 		}
 
-		private static void setPostConstructDelegates( Type type, object value, PostConstructContainer postConstructContainer )
+		private static void setInjectedType( ref Type type, InjectAttribute injectAttribute )
 		{
-			var postConstructMethod = type.GetMethods( BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic )
-										  .FirstOrDefault( m => getAttribute<PostConstructAttribute>( m ) != null );
-			if ( postConstructMethod == null )
-			{
-				return;
-			}
+			var initialType = type;
+			var allImplementations = _knownTypes.Where( t => t != initialType && initialType.IsAssignableFrom( t ) );
 
-			try
+			if ( allImplementations.Count() > 1 )
 			{
-				var postConstructDelegate = (PostConstruct) postConstructMethod.CreateDelegate( typeof ( PostConstruct ), value );
-				postConstructContainer.AddDelegateToPostConstruct( postConstructDelegate );
-			}
-			catch ( Exception e )
-			{
-				throw new PicagariException( PicagariException.CannotUseMethodAsPostConstructDelegate, new object[] {type, postConstructMethod}, e );
-			}
-		}
+				if ( injectAttribute.AlternateType != null )
+				{
+					type = injectAttribute.AlternateType;
+				}
+				else
+				{
+					var defaultImplementation = allImplementations.FirstOrDefault( t => getAttribute<DefaultAttribute>( t ) != null );
 
-		private static T getAttribute<T>( MemberInfo member ) where T : Attribute
-		{
-			return (T) member.GetCustomAttribute( typeof ( T ), false );
+					if ( defaultImplementation == null )
+					{
+						throw new PicagariException( PicagariException.NoDefaultNoProducer, new[] {type} );
+					}
+
+					type = defaultImplementation;
+				}
+			}
 		}
 
 		private static object getInjectedValue( object parent, MemberInfo member, ref Type type )
@@ -154,29 +154,43 @@ namespace Picagari
 			return value;
 		}
 
-		private static void setInjectedType( ref Type type, InjectAttribute injectAttribute )
+		private static object getMemberValue( object parent, MemberInfo member )
 		{
-			var initialType = type;
-			var allImplementations = _knownTypes.Where( t => t != initialType && initialType.IsAssignableFrom( t ) );
-
-			if ( allImplementations.Count() > 1 )
+			switch ( member.MemberType )
 			{
-				if ( injectAttribute.AlternateType != null )
-				{
-					type = injectAttribute.AlternateType;
-				}
-				else
-				{
-					var defaultImplementation = allImplementations.FirstOrDefault( t => getAttribute<DefaultAttribute>( t ) != null );
-
-					if ( defaultImplementation == null )
-					{
-						throw new PicagariException( PicagariException.NoDefaultNoProducer, new[] {type} );
-					}
-
-					type = defaultImplementation;
-				}
+				case MemberTypes.Field:
+					return ( (FieldInfo) member ).GetValue( parent );
+				case MemberTypes.Property:
+					return ( (PropertyInfo) member ).GetValue( parent );
 			}
+
+			return null;
+		}
+
+		private static void setMemberValue( object parent, MemberInfo member, object value )
+		{
+			switch ( member.MemberType )
+			{
+				case MemberTypes.Field:
+					( (FieldInfo) member ).SetValue( parent, value );
+					break;
+				case MemberTypes.Property:
+					( (PropertyInfo) member ).SetValue( parent, value );
+					break;
+			}
+		}
+
+		private static Type getMemberType( MemberInfo member )
+		{
+			switch ( member.MemberType )
+			{
+				case MemberTypes.Field:
+					return ( (FieldInfo) member ).FieldType;
+				case MemberTypes.Property:
+					return ( (PropertyInfo) member ).PropertyType;
+			}
+
+			return null;
 		}
 
 		private static void scanHierarchy( Type type )
@@ -204,43 +218,29 @@ namespace Picagari
 			} );
 		}
 
-		private static Type getMemberType( MemberInfo member )
+		private static void setPostConstructDelegates( Type type, object value, PostConstructContainer postConstructContainer )
 		{
-			switch ( member.MemberType )
+			var postConstructMethod = type.GetMethods( BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic )
+										  .FirstOrDefault( m => getAttribute<PostConstructAttribute>( m ) != null );
+			if ( postConstructMethod == null )
 			{
-				case MemberTypes.Field:
-					return ( (FieldInfo) member ).FieldType;
-				case MemberTypes.Property:
-					return ( (PropertyInfo) member ).PropertyType;
+				return;
 			}
 
-			return null;
+			try
+			{
+				var postConstructDelegate = (PostConstruct) postConstructMethod.CreateDelegate( typeof ( PostConstruct ), value );
+				postConstructContainer.AddDelegateToPostConstruct( postConstructDelegate );
+			}
+			catch ( Exception e )
+			{
+				throw new PicagariException( PicagariException.CannotUseMethodAsPostConstructDelegate, new object[] {type, postConstructMethod}, e );
+			}
 		}
 
-		private static object getMemberValue( object parent, MemberInfo member )
+		private static T getAttribute<T>( MemberInfo member ) where T : Attribute
 		{
-			switch ( member.MemberType )
-			{
-				case MemberTypes.Field:
-					return ( (FieldInfo) member ).GetValue( parent );
-				case MemberTypes.Property:
-					return ( (PropertyInfo) member ).GetValue( parent );
-			}
-
-			return null;
-		}
-
-		private static void setMemberValue( object parent, MemberInfo member, object value )
-		{
-			switch ( member.MemberType )
-			{
-				case MemberTypes.Field:
-					( (FieldInfo) member ).SetValue( parent, value );
-					break;
-				case MemberTypes.Property:
-					( (PropertyInfo) member ).SetValue( parent, value );
-					break;
-			}
+			return (T) member.GetCustomAttribute( typeof ( T ), false );
 		}
 	}
 }
