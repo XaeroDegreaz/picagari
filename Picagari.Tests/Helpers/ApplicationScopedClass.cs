@@ -2,8 +2,6 @@
 
 namespace Picagari.Tests.Helpers
 {
-	[ApplicationScoped]
-	class ApplicationScopedClass
-	{
-	}
+    [ApplicationScoped]
+    internal class ApplicationScopedClass {}
 }

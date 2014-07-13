@@ -3,14 +3,14 @@ using Picagari.Attributes;
 
 namespace Picagari.Tests.Helpers
 {
-	public class AlternateImplementation : ITestInterface
-	{
-		[Inject]
-		private ILog log;
+    public class AlternateImplementation : ITestInterface
+    {
+        [Inject]
+        private ILog log;
 
-		public void LogSomething()
-		{
-			log.Debug( "This is the alternate implementation." );
-		}
-	}
+        public void LogSomething()
+        {
+            log.Debug( "This is the alternate implementation." );
+        }
+    }
 }
