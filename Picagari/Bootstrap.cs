@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using Picagari.Attributes;
 using Picagari.Exceptions;
+using PostConstruct = Picagari.PostConstructContainer.PostConstruct;
 
 namespace Picagari
 {
@@ -25,8 +26,10 @@ namespace Picagari
 		/// <exception cref="PicagariException">Throws when requirements for injection are not satisfied.</exception>
 		public static object Start( object obj )
 		{
+			var postConstructContainer = new PostConstructContainer();
 			scanHierarchy( obj.GetType() );
-			injectMembers( obj, getInjectableMembers( obj ), new List<Type>() );
+			injectMembers( obj, getInjectableMembers( obj ), new List<Type>(), postConstructContainer );
+			postConstructContainer.InvokePostConstruct();
 			return obj;
 		}
 
@@ -37,7 +40,7 @@ namespace Picagari
 					  .Where( m => getAttribute<InjectAttribute>( m ) != null );
 		}
 
-		private static void injectMembers( object parent, IEnumerable<MemberInfo> objs, List<Type> parentTypesList )
+		private static void injectMembers( object parent, IEnumerable<MemberInfo> objs, List<Type> parentTypesList, PostConstructContainer postConstructContainer )
 		{
 			foreach ( var member in objs )
 			{
@@ -47,7 +50,7 @@ namespace Picagari
 
 				if ( parentTypesList.Contains( type ) )
 				{
-					throw new PicagariException( "Injecting the member " + member + " inside " + parent + " would cause infinite recursion." );
+					throw new PicagariException( PicagariException.InjectWillCauseInfiniteRecursion, new[] {member, parent} );
 				}
 
 				if ( _applicationScopedObjects.ContainsKey( type ) )
@@ -85,21 +88,29 @@ namespace Picagari
 				}
 
 				//# Recurse
-				injectMembers( value, getInjectableMembers( value ), parentTypesList );
-				doPostConstruct( type, value );
+				injectMembers( value, getInjectableMembers( value ), parentTypesList, postConstructContainer );
+				setPostConstructDelegates( type, value, postConstructContainer );
 				parentTypesList.Clear();
 			}
 		}
 
-		private static void doPostConstruct( Type type, object value )
+		private static void setPostConstructDelegates( Type type, object value, PostConstructContainer postConstructContainer )
 		{
 			var postConstructMethod = type.GetMethods( BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic )
 										  .FirstOrDefault( m => getAttribute<PostConstructAttribute>( m ) != null );
-
-			if ( postConstructMethod != null )
+			if ( postConstructMethod == null )
 			{
-				//TODO Handle invocation exception.
-				postConstructMethod.Invoke( value, null );
+				return;
+			}
+
+			try
+			{
+				var postConstructDelegate = (PostConstruct) postConstructMethod.CreateDelegate( typeof ( PostConstruct ), value );
+				postConstructContainer.AddDelegateToPostConstruct( postConstructDelegate );
+			}
+			catch ( Exception e )
+			{
+				throw new PicagariException( PicagariException.CannotUseMethodAsPostConstructDelegate, new object[] {type, postConstructMethod}, e );
 			}
 		}
 
@@ -126,17 +137,17 @@ namespace Picagari
 			{
 				if ( e.Message.ToLower().Contains( "interface" ) )
 				{
-					throw new PicagariException( "You should create a producer for, or have at least one class that implements " + type + ".", e );
+					throw new PicagariException( PicagariException.CannotConstructInterfaceByItself, new[] {type}, e );
 				}
 				if ( e.Message.ToLower().Contains( "constructor" ) )
 				{
-					throw new PicagariException( "NetCDI requires a parameterless constructor in order to inject " + type + ".", e );
+					throw new PicagariException( PicagariException.NeedsParameterlessConstructor, new[] {type}, e );
 				}
 			}
 
 			if ( value == null )
 			{
-				throw new PicagariException( "NetCDI somehow came up injecting a null value for " + type + ". Is there a producer for this type?" );
+				throw new PicagariException( PicagariException.UnknownInjectionError, new[] {type} );
 			}
 
 			setMemberValue( parent, member, value );
@@ -160,7 +171,7 @@ namespace Picagari
 
 					if ( defaultImplementation == null )
 					{
-						throw new PicagariException( "More than one implementation exists for " + type + ", and no default has been specified for injection." );
+						throw new PicagariException( PicagariException.NoDefaultNoProducer, new[] {type} );
 					}
 
 					type = defaultImplementation;
@@ -188,7 +199,7 @@ namespace Picagari
 				catch ( ArgumentException e )
 				{
 					var known = _knownProducers[ productType ];
-					throw new PicagariException( "There can only be one producer for " + productType + ", and there is already one at " + known.ReflectedType + "." + known.Name, e );
+					throw new PicagariException( PicagariException.TooManyProducersForType, new object[] {productType, known.ReflectedType, known.Name}, e );
 				}
 			} );
 		}

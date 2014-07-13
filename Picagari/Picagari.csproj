@@ -43,6 +43,7 @@
     <Compile Include="InjectionPoint.cs" />
     <Compile Include="Attributes\InjectAttribute.cs" />
     <Compile Include="Exceptions\PicagariException.cs" />
+    <Compile Include="PostConstructContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

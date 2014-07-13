@@ -18,6 +18,7 @@ namespace Picagari.Attributes
 		/// of an interface or abstract class by setting this property.
 		/// </summary>
 		public Type AlternateType { get; private set; }
+
 		/// <summary>
 		/// Inject the default implementation of the type associated with the
 		/// annotated member.
