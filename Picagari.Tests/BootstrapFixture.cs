@@ -32,7 +32,7 @@ namespace Picagari.Tests
         [TestFixtureSetUp]
         public void Setup()
         {
-            Bootstrap.Start( this );
+            Picagari.Start( this );
         }
 
         [Test]

@@ -41,7 +41,7 @@
     <Compile Include="Attributes\ProducesAttribute.cs" />
     <Compile Include="Attributes\SessionScopedAttribute.cs" />
     <Compile Include="Attributes\RequestScopedAttribute.cs" />
-    <Compile Include="Bootstrap.cs" />
+    <Compile Include="Picagari.cs" />
     <Compile Include="InjectionPoint.cs" />
     <Compile Include="Attributes\InjectAttribute.cs" />
     <Compile Include="Exceptions\PicagariException.cs" />
