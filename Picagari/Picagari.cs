@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Text.RegularExpressions;
 using Picagari.Attributes;
 using Picagari.Exceptions;
 using Picagari.ScopeObjects;
@@ -60,69 +61,43 @@ namespace Picagari
 
         private static void injectMembers( object parent, IEnumerable<MemberInfo> objs, List<Type> parentTypesList, PostConstructContainer postConstructContainer )
         {
+            MethodInfo requestKeyProducer = null;
+            MethodInfo sessionKeyProducer = null;
+            SessionScopedKey sessionScopedKey = null;
+            RequestScopedKey requestScopedKey = null;
+
             foreach ( var member in objs )
             {
                 parentTypesList.Add( parent.GetType() );
+
                 var type = getMemberType( member );
                 object value = null;
+                var injectionPoint = new InjectionPoint( parent, member, getAttribute<InjectAttribute>( member ) );
+                SessionScopedAttribute sessionScopedAttribute;
+                RequestScopedAttribute requestScopedAttribute;
 
                 if ( parentTypesList.Contains( type ) )
                 {
                     throw new PicagariException( PicagariException.InjectWillCauseInfiniteRecursion, new[] {member, parent} );
                 }
 
-                if ( _applicationScopedObjects.ContainsKey( type ) )
+                if ( isApplicationScopedTypeAvailable( parent, type, member ) )
                 {
-                    setMemberValue( parent, member, _applicationScopedObjects[ type ] );
                     continue;
                 }
 
-                var requestScopedAttribute = getAttribute<RequestScopedAttribute>( type );
-                if ( requestScopedAttribute != null )
+                prepareScopeKey( type, out requestScopedAttribute, ref requestKeyProducer, ref requestScopedKey, injectionPoint );
+
+                if ( isRequestScopedTypeAvailable( parent, type, member, requestScopedKey ) )
                 {
-                    MethodInfo producer;
-                    _knownProducers.TryGetValue( typeof ( RequestScopedKey ), out producer );
-                    if ( producer != null )
-                    {
-                        //# Perhaps some message in log that they should create a RequestScopedKey producer to use RequestScopedAttribute
-                        var injectionPoint = new InjectionPoint( parent, member, getAttribute<InjectAttribute>( member ) );
-                        var key = producer.Invoke( null, new[] {injectionPoint} ) as RequestScopedKey;
-                        if ( key != null )
-                        {
-                            if ( _requestScopedObjects.ContainsKey( key ) )
-                            {
-                                if ( _requestScopedObjects[ key ].ContainsKey( type ) )
-                                {
-                                    setMemberValue( parent, member, _requestScopedObjects[ key ][ type ] );
-                                    continue;
-                                }
-                            }
-                        }
-                    }
+                    continue;
                 }
 
-                var sessionScopedAttribute = getAttribute<SessionScopedAttribute>( type );
-                if ( sessionScopedAttribute != null )
+                prepareScopeKey( type, out sessionScopedAttribute, ref sessionKeyProducer, ref sessionScopedKey, injectionPoint );
+
+                if ( isSessionScopedTypeAvailable( parent, type, member, sessionScopedKey ) )
                 {
-                    MethodInfo producer;
-                    _knownProducers.TryGetValue( typeof ( SessionScopedKey ), out producer );
-                    if ( producer != null )
-                    {
-                        //# Perhaps some message in log that they should create a RequestScopedKey producer to use RequestScopedAttribute
-                        var injectionPoint = new InjectionPoint( parent, member, getAttribute<InjectAttribute>( member ) );
-                        var key = producer.Invoke( null, new[] {injectionPoint} ) as SessionScopedKey;
-                        if ( key != null )
-                        {
-                            if ( _sessionScopedObjects.ContainsKey( key ) )
-                            {
-                                if ( _sessionScopedObjects[ key ].ContainsKey( type ) )
-                                {
-                                    setMemberValue( parent, member, _sessionScopedObjects[ key ][ type ] );
-                                    continue;
-                                }
-                            }
-                        }
-                    }
+                    continue;
                 }
 
                 if ( !_knownTypes.Contains( type ) )
@@ -133,7 +108,6 @@ namespace Picagari
                 if ( _knownProducers.ContainsKey( type ) )
                 {
                     var producer = _knownProducers[ type ];
-                    var injectionPoint = new InjectionPoint( parent, member, getAttribute<InjectAttribute>( member ) );
                     value = producer.Invoke( null, new[] {injectionPoint} );
                     setMemberValue( parent, member, value );
                 }
@@ -148,36 +122,16 @@ namespace Picagari
                     _applicationScopedObjects[ type ] = value;
                 }
 
-                if ( requestScopedAttribute != null )
+                //# If this fires, this means it's the first object for this scope to be inserted.
+                if ( requestScopedAttribute != null && requestScopedKey != null )
                 {
-                    MethodInfo producer;
-                    _knownProducers.TryGetValue( typeof ( RequestScopedKey ), out producer );
-                    if ( producer != null )
-                    {
-                        //# Perhaps some message in log that they should create a RequestScopedKey producer to use RequestScopedAttribute
-                        var injectionPoint = new InjectionPoint( parent, member, getAttribute<InjectAttribute>( member ) );
-                        var key = producer.Invoke( null, new[] {injectionPoint} ) as RequestScopedKey;
-                        if ( key != null )
-                        {
-                            _requestScopedObjects[ key ] = new Dictionary<Type, object> {{type, value}};
-                        }
-                    }
+                    _requestScopedObjects[ requestScopedKey ] = new Dictionary<Type, object> {{type, value}};
                 }
 
-                if ( sessionScopedAttribute != null )
+                //# If this fires, this means it's the first object for this scope to be inserted.
+                if ( sessionScopedAttribute != null && sessionScopedKey != null )
                 {
-                    MethodInfo producer;
-                    _knownProducers.TryGetValue( typeof ( SessionScopedKey ), out producer );
-                    if ( producer != null )
-                    {
-                        //# Perhaps some message in log that they should create a RequestScopedKey producer to use RequestScopedAttribute
-                        var injectionPoint = new InjectionPoint( parent, member, getAttribute<InjectAttribute>( member ) );
-                        var key = producer.Invoke( null, new[] {injectionPoint} ) as SessionScopedKey;
-                        if ( key != null )
-                        {
-                            _sessionScopedObjects[ key ] = new Dictionary<Type, object> {{type, value}};
-                        }
-                    }
+                    _sessionScopedObjects[ sessionScopedKey ] = new Dictionary<Type, object> {{type, value}};
                 }
 
                 //# Recurse
@@ -185,6 +139,80 @@ namespace Picagari
                 setPostConstructDelegates( type, value, postConstructContainer );
                 parentTypesList.Clear();
             }
+        }
+
+        private static void prepareScopeKey<TA, TK>( Type type, out TA attribute, ref MethodInfo producer, ref TK key, InjectionPoint injectionPoint ) where TA : Attribute
+        where TK : ScopeKey
+        {
+            attribute = getAttribute<TA>( type );
+            if ( attribute == null )
+            {
+                return;
+            }
+            //# We can safely break out of this early if there is a scope key (no need to check for producer and produce a key)
+            if ( key != null )
+            {
+                return;
+            }
+
+            if ( producer == null )
+            {
+                _knownProducers.TryGetValue( typeof ( TK ), out producer );
+            }
+
+            if ( producer == null )
+            {
+                return;
+            }
+
+            if ( key == null )
+            {
+                key = (TK) producer.Invoke( null, new[] {injectionPoint} );
+            }
+        }
+
+        private static bool isSessionScopedTypeAvailable( object parent, Type type, MemberInfo member, SessionScopedKey sessionScopedKey )
+        {
+            //# We should refactor above and below this code into separate methods. Top for preparing reusables, below for assigning a reusable
+            if ( sessionScopedKey == null || !_sessionScopedObjects.ContainsKey( sessionScopedKey ) )
+            {
+                return false;
+            }
+            if ( !_sessionScopedObjects[ sessionScopedKey ].ContainsKey( type ) )
+            {
+                return false;
+            }
+
+            setMemberValue( parent, member, _sessionScopedObjects[ sessionScopedKey ][ type ] );
+
+            return true;
+        }
+
+        private static bool isRequestScopedTypeAvailable( object parent, Type type, MemberInfo member, RequestScopedKey requestScopedKey )
+        {
+            if ( requestScopedKey == null || !_requestScopedObjects.ContainsKey( requestScopedKey ) )
+            {
+                return false;
+            }
+
+            if ( !_requestScopedObjects[ requestScopedKey ].ContainsKey( type ) )
+            {
+                return false;
+            }
+
+            setMemberValue( parent, member, _requestScopedObjects[ requestScopedKey ][ type ] );
+
+            return true;
+        }
+
+        private static bool isApplicationScopedTypeAvailable( object parent, Type type, MemberInfo member )
+        {
+            if ( !_applicationScopedObjects.ContainsKey( type ) )
+            {
+                return false;
+            }
+            setMemberValue( parent, member, _applicationScopedObjects[ type ] );
+            return true;
         }
 
         private static void setInjectedType( ref Type type, InjectAttribute injectAttribute )

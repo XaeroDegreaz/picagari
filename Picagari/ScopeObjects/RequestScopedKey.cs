@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Picagari.ScopeObjects
+﻿namespace Picagari.ScopeObjects
 {
-    public class RequestScopedKey
+    public class RequestScopedKey : ScopeKey
     {
-        public object Key { get; private set; }
+        public override sealed object Key { get; protected set; }
 
         public RequestScopedKey( object key )
         {
