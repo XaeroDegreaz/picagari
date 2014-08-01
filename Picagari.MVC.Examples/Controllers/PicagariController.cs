@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Web.Mvc;
 using Picagari.Attributes;
-using Picagari.Examples.MVC.Services;
+using Picagari.MVC.Examples.Models;
 
 namespace Picagari.Examples.MVC.Controllers
 {

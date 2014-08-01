@@ -34,7 +34,8 @@ namespace Picagari
         public static object Start( object obj )
         {
             var postConstructContainer = new PostConstructContainer();
-            scanHierarchy( obj.GetType() );
+            //scanHierarchy( obj.GetType() );
+            performFullAssemblyScan();
             injectMembers( obj, getInjectableMembers( obj ), new List<Type>(), postConstructContainer );
             postConstructContainer.InvokePostConstruct();
             return obj;
@@ -285,8 +286,39 @@ namespace Picagari
             return null;
         }
 
+        private static void performFullAssemblyScan()
+        {
+            var assemblies = AppDomain.CurrentDomain
+                                      .GetAssemblies()
+                                      .Where( a =>
+                                              !a.FullName.StartsWith( "System." ) &&
+                                              !a.FullName.StartsWith( "System," ) &&
+                                              !a.FullName.StartsWith( "mscorlib," ) );
+            foreach ( var assembly in assemblies )
+            {
+                var newTypes = assembly.GetTypes().Where( t => !_knownTypes.Contains( t ) ).ToList();
+                var producers = newTypes.SelectMany( t => t.GetMethods().Where( m => getAttribute<ProducesAttribute>( m ) != null ) );
+
+                _knownTypes.AddRange( newTypes );
+
+                foreach ( var producer in producers )
+                {
+                    var productType = getAttribute<ProducesAttribute>( producer ).QualifiedType ?? producer.ReturnType;
+
+                    if ( _knownProducers.ContainsKey( productType ) )
+                    {
+                        var known = _knownProducers[ productType ];
+                        throw new PicagariException( PicagariException.TooManyProducersForType, new object[] {productType, known.ReflectedType, known.Name} );
+                    }
+
+                    _knownProducers.Add( productType, producer );
+                }
+            }
+        }
+
         private static void scanHierarchy( Type type )
         {
+            Assembly[] assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
             var newTypes = Assembly.GetAssembly( type )
                                    .GetTypes()
                                    .Where( t => !_knownTypes.Contains( t ) )
