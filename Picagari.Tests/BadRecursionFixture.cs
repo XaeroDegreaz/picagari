@@ -15,35 +15,35 @@ namespace Picagari.Tests
         [Test]
         public void MembersInjectingThemselvesShouldThrowException()
         {
-            Bootstrap.Start( new BadRecursiveClass() );
+            Picagari.Start( new BadRecursiveClass() );
         }
 
         [ExpectedException( typeof ( PicagariException ) )]
         [Test]
         public void MembersInjectingThemselvesShouldThrowException2()
         {
-            Bootstrap.Start( new BadRecursiveClass.BadRecursiveClass2() );
+            Picagari.Start( new BadRecursiveClass.BadRecursiveClass2() );
         }
 
         [ExpectedException( typeof ( PicagariException ) )]
         [Test]
         public void MembersInjectingThemselvesShouldThrowException3()
         {
-            Bootstrap.Start( new BadRecursiveClass.BadRecursiveClass3() );
+            Picagari.Start( new BadRecursiveClass.BadRecursiveClass3() );
         }
 
         [ExpectedException( typeof ( PicagariException ) )]
         [Test]
         public void MembersInjectingThemselvesShouldThrowException5()
         {
-            Bootstrap.Start( new BadRecursiveClass.BadRecursiveClass5() );
+            Picagari.Start( new BadRecursiveClass.BadRecursiveClass5() );
         }
 
         [ExpectedException( typeof ( PicagariException ) )]
         [Test]
         public void MembersInjectingThemselvesShouldThrowException6()
         {
-            Bootstrap.Start( new BadRecursiveClass.BadRecursiveClass6() );
+            Picagari.Start( new BadRecursiveClass.BadRecursiveClass6() );
         }
     }
 }

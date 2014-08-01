@@ -5,7 +5,7 @@ namespace Picagari.Attributes
     /// <summary>
     /// Mark a field or property for injection into the current class.
     /// If you specify an <see cref="AlternateType"/>, the 
-    /// <see cref="Bootstrap"/> class will inject this type over
+    /// <see cref="Picagari"/> class will inject this type over
     /// any other implementations of the inherited interface or
     /// abstract class.
     /// </summary>

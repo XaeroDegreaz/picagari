@@ -10,10 +10,10 @@ using PostConstruct = Picagari.PostConstructContainer.PostConstruct;
 namespace Picagari
 {
     /// <summary>
-    /// The Bootstrap class handles injecting all marked fields and properties
+    /// The Picagari class handles injecting all marked fields and properties
     /// of the target class.
     /// </summary>
-    public static class Bootstrap
+    public static class Picagari
     {
         private static readonly Dictionary<Type, object> _applicationScopedObjects = new Dictionary<Type, object>();
         private static readonly Dictionary<Type, MethodInfo> _knownProducers = new Dictionary<Type, MethodInfo>();

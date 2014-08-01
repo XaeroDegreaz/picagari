@@ -27,7 +27,7 @@ namespace Picagari.Examples.MVC
 
         protected internal void Application_EndRequest( object obj, EventArgs e )
         {
-            Bootstrap.EndRequest( Context.Items[ RequestScopedKey ] as RequestScopedKey );
+            Picagari.EndRequest( Context.Items[ RequestScopedKey ] as RequestScopedKey );
             Context.Items.Remove( RequestScopedKey );
         }
 
@@ -38,7 +38,7 @@ namespace Picagari.Examples.MVC
 
         protected internal void Session_OnEnd()
         {
-            Bootstrap.EndSession( Session[ SessionScopedKey ] as SessionScopedKey );
+            Picagari.EndSession( Session[ SessionScopedKey ] as SessionScopedKey );
             Session.Remove( SessionScopedKey );
         }
 
@@ -60,7 +60,7 @@ namespace Picagari.Examples.MVC
         public override IController CreateController( RequestContext requestContext, string controllerName )
         {
             var controller = base.CreateController( requestContext, controllerName );
-            return (IController) Bootstrap.Start( controller );
+            return (IController) Picagari.Start( controller );
         }
     }
 }

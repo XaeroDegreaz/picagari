@@ -26,7 +26,7 @@ namespace Picagari.Examples.KlingonsRule
 
         public InSpace()
         {
-            Bootstrap.Start( this );
+            Picagari.Start( this );
             // Should log Qapla'! to your console.
             Pilot.DoBattleCry();
             Console.ReadLine();
