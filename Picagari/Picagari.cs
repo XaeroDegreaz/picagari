@@ -71,10 +71,6 @@ namespace Picagari
                 parentTypesList.Add( parent.GetType() );
 
                 var type = getMemberType( member );
-                object value = null;
-                var injectionPoint = new InjectionPoint( parent, member, getAttribute<InjectAttribute>( member ) );
-                SessionScopedAttribute sessionScopedAttribute;
-                RequestScopedAttribute requestScopedAttribute;
 
                 if ( parentTypesList.Contains( type ) )
                 {
@@ -86,20 +82,32 @@ namespace Picagari
                     continue;
                 }
 
+                object value = null;
+                var injectionPoint = new InjectionPoint( parent, member, getAttribute<InjectAttribute>( member ) );
+                SessionScopedAttribute sessionScopedAttribute;
+                RequestScopedAttribute requestScopedAttribute;
+
+                #region MVC Scope Checking
+
+                //# We do some preparing and checking for scope keys for our MVC users.
+                //# I could put these calls into a contained method, but the signature would be huge, and nasty.
                 prepareScopeKey( type, out requestScopedAttribute, ref requestKeyProducer, ref requestScopedKey, injectionPoint );
 
-                if ( isRequestScopedTypeAvailable( parent, type, member, requestScopedKey ) )
+                if ( isScopeTypeAvailable( parent, type, member, requestScopedKey, _requestScopedObjects ) )
                 {
                     continue;
                 }
 
                 prepareScopeKey( type, out sessionScopedAttribute, ref sessionKeyProducer, ref sessionScopedKey, injectionPoint );
 
-                if ( isSessionScopedTypeAvailable( parent, type, member, sessionScopedKey ) )
+                if ( isScopeTypeAvailable( parent, type, member, sessionScopedKey, _sessionScopedObjects ) )
                 {
                     continue;
                 }
 
+                #endregion
+
+                //# Unknown type? Scan the type's assembly for producers. Should rarely be called, but just in case.
                 if ( !_knownTypes.Contains( type ) )
                 {
                     scanHierarchy( type );
@@ -117,26 +125,31 @@ namespace Picagari
                     value = getInjectedValue( parent, member, ref type );
                 }
 
+                #region Scoped Types Initial Creation
+
                 if ( getAttribute<ApplicationScopedAttribute>( type ) != null )
                 {
                     _applicationScopedObjects[ type ] = value;
                 }
 
-                //# If this fires, this means it's the first object for this scope to be inserted.
                 if ( requestScopedAttribute != null && requestScopedKey != null )
                 {
                     _requestScopedObjects[ requestScopedKey ] = new Dictionary<Type, object> {{type, value}};
                 }
 
-                //# If this fires, this means it's the first object for this scope to be inserted.
                 if ( sessionScopedAttribute != null && sessionScopedKey != null )
                 {
                     _sessionScopedObjects[ sessionScopedKey ] = new Dictionary<Type, object> {{type, value}};
                 }
 
+                #endregion
+
                 //# Recurse
                 injectMembers( value, getInjectableMembers( value ), parentTypesList, postConstructContainer );
+                //# Search this new member for a post construct method to be fired after Start() returns.
                 setPostConstructDelegates( type, value, postConstructContainer );
+                //# We've reached full instantiation of this member's injection tree. We can clear the parent type list for reuse
+                //# on next sibling injectable member.
                 parentTypesList.Clear();
             }
         }
@@ -171,37 +184,18 @@ namespace Picagari
             }
         }
 
-        private static bool isSessionScopedTypeAvailable( object parent, Type type, MemberInfo member, SessionScopedKey sessionScopedKey )
+        private static bool isScopeTypeAvailable<TK>( object parent, Type type, MemberInfo member, TK key, Dictionary<TK, Dictionary<Type, Object>> dict )
+        where TK : ScopeKey
         {
-            //# We should refactor above and below this code into separate methods. Top for preparing reusables, below for assigning a reusable
-            if ( sessionScopedKey == null || !_sessionScopedObjects.ContainsKey( sessionScopedKey ) )
+            if ( key == null || !dict.ContainsKey( key ) )
             {
                 return false;
             }
-            if ( !_sessionScopedObjects[ sessionScopedKey ].ContainsKey( type ) )
+            if ( !dict[ key ].ContainsKey( type ) )
             {
                 return false;
             }
-
-            setMemberValue( parent, member, _sessionScopedObjects[ sessionScopedKey ][ type ] );
-
-            return true;
-        }
-
-        private static bool isRequestScopedTypeAvailable( object parent, Type type, MemberInfo member, RequestScopedKey requestScopedKey )
-        {
-            if ( requestScopedKey == null || !_requestScopedObjects.ContainsKey( requestScopedKey ) )
-            {
-                return false;
-            }
-
-            if ( !_requestScopedObjects[ requestScopedKey ].ContainsKey( type ) )
-            {
-                return false;
-            }
-
-            setMemberValue( parent, member, _requestScopedObjects[ requestScopedKey ][ type ] );
-
+            setMemberValue( parent, member, dict[ key ][ type ] );
             return true;
         }
 
