@@ -66,7 +66,7 @@ namespace Picagari.MVC
         public override IController CreateController( RequestContext requestContext, string controllerName )
         {
             var controller = base.CreateController( requestContext, controllerName );
-            return (IController) Picagari.Start( controller );
+            return Picagari.Start( controller );
         }
     }
 }

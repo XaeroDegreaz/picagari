@@ -32,7 +32,7 @@ namespace Picagari
         /// <param name="obj">The object in which to begin injecting marked members.</param>
         /// <returns>Return the object after injection is compled. Useful for getting a reference to manually constructed objects that get bootstrapped.</returns>
         /// <exception cref="PicagariException">Throws when requirements for injection are not satisfied.</exception>
-        public static object Start( object obj )
+        public static T Start<T>( T obj )
         {
             var postConstructContainer = new PostConstructContainer();
             performFullAssemblyScan();

@@ -35,6 +35,9 @@
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
     </Reference>
+    <Reference Include="NSubstitute">
+      <HintPath>..\packages\NSubstitute.1.7.2.0\lib\NET45\NSubstitute.dll</HintPath>
+    </Reference>
     <Reference Include="nunit.framework">
       <HintPath>..\packages\NUnit.2.6.3\lib\nunit.framework.dll</HintPath>
     </Reference>
@@ -50,6 +53,9 @@
     <Compile Include="Helpers\DefaultImplementation.cs" />
     <Compile Include="Helpers\GoodClass.cs" />
     <Compile Include="Helpers\ITestInterface.cs" />
+    <Compile Include="Helpers\RequestScopedClass.cs" />
+    <Compile Include="Helpers\SessionScopedClass.cs" />
+    <Compile Include="ScopedKeyFixture.cs" />
     <Compile Include="Producers\Producers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
