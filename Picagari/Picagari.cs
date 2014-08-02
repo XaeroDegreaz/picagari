@@ -35,7 +35,6 @@ namespace Picagari
         public static object Start( object obj )
         {
             var postConstructContainer = new PostConstructContainer();
-            //scanHierarchy( obj.GetType() );
             performFullAssemblyScan();
             injectMembers( obj, getInjectableMembers( obj ), new List<Type>(), postConstructContainer );
             postConstructContainer.InvokePostConstruct();
@@ -132,15 +131,8 @@ namespace Picagari
                     _applicationScopedObjects[ type ] = value;
                 }
 
-                if ( requestScopedAttribute != null && requestScopedKey != null )
-                {
-                    _requestScopedObjects[ requestScopedKey ] = new Dictionary<Type, object> {{type, value}};
-                }
-
-                if ( sessionScopedAttribute != null && sessionScopedKey != null )
-                {
-                    _sessionScopedObjects[ sessionScopedKey ] = new Dictionary<Type, object> {{type, value}};
-                }
+                registerScopeObjects( requestScopedAttribute, requestScopedKey, type, value, _requestScopedObjects );
+                registerScopeObjects( sessionScopedAttribute, sessionScopedKey, type, value, _sessionScopedObjects );
 
                 #endregion
 
@@ -154,7 +146,18 @@ namespace Picagari
             }
         }
 
-        private static void prepareScopeKey<TA, TK>( Type type, out TA attribute, ref MethodInfo producer, ref TK key, InjectionPoint injectionPoint ) where TA : Attribute
+        private static void registerScopeObjects<TA, TK>( TA attribute, TK key, Type type, object value, Dictionary<TK, Dictionary<Type, object>> dict )
+        where TA : Attribute
+        where TK : ScopeKey
+        {
+            if ( attribute != null && key != null )
+            {
+                dict[ key ] = new Dictionary<Type, object> {{type, value}};
+            }
+        }
+
+        private static void prepareScopeKey<TA, TK>( Type type, out TA attribute, ref MethodInfo producer, ref TK key, InjectionPoint injectionPoint )
+        where TA : Attribute
         where TK : ScopeKey
         {
             attribute = getAttribute<TA>( type );
