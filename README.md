@@ -5,7 +5,7 @@ Picagari - The Dependency Injection Library for .Net / Mono
 Picagari (Malay for _syringe_) is an Inversion of Control (IoC), Contexts and Dependency Injection (CDI) library for .Net / Mono.
 A high level example of what Picagari does would be to allow developers to quickly create classes, without having to create factories for constructing objects, or repeatedly having to manually construct objects, and their dependencies (so on, and so forth). It also helps with the decoupling of interfaces and their implementations.
 
-There are no configurations to write -- just start by adding the `[Inject]` attributes to your fields / properties, and then use `Bootstrap.Start` on the object that owns them.
+There are no configurations to write -- just start by adding the `[Inject]` attributes to your fields / properties, and then use `Picagari.Start` on the object that owns them.
 
 ## Basic Code Example
 With some clever usage of the `[Inject]` attribute on your fields and properties you can:
@@ -67,14 +67,14 @@ public class Pilot
     public Pilot()
     {
         //# Construct this class' dependencies (and dependencies' dependencies recursively)
-        Bootstrap.Start( this );
+        Picagari.Start( this );
 	    Uniform.ZipUp();
 	    SpaceShip.FlyOut();
     }
 }
 ```
 
-You can also use `Bootstrap.Start()` with other objects:
+You can also use `Picagari.Start()` with other objects:
 ```C#
 public class Pilot
 {
@@ -85,8 +85,8 @@ public class Pilot
 
     public Pilot()
     {
-	    Bootstrap.Start( this );
-	    SpaceShip = Bootstrap.Start( new SpaceShip() );
+	    Picagari.Start( this );
+	    SpaceShip = Picagari.Start( new SpaceShip() );
 	    Uniform.ZipUp();
 	    SpaceShip.FlyOut();
     }
@@ -100,6 +100,8 @@ public class Pilot
 | `[Produces]`          	| Used on a method, you tell Picagari that you want to use that method for producing the object before you inject it. This is good for when you want to use some logic to decide which implementation of a certain object type you'd like to return (see the [Klingons Rule](https://github.com/XaeroDegreaz/picagari/tree/master/Picagari.Examples/KlingonsRule) example). 	|
 | `[Default]`           	| Classes marked with this attribute will be injected by default should there be more than one.implementation of a class, or interface. This ia required on at least one of those classes.                                                                                      	|
 | `[ApplicationScoped]` 	| Classes marked with this attribute will only ever be constructed once. They essentially become reusable singletons, that can be injected over, and over but keep the same reference.                                                                                          	|
+| (MVC Only) `[SessionScoped]` 	| Similar to ApplicationScoped, classes marked with this attribute will only constructed once, and will be reused throughout a browser session.                                                                                          	|
+| (MVC Only) `[RequestScoped]` 	| Classes marked with this scope attribute will only be constructed once, and reused throughout a single request (page load).                                                                                          	|
 | `[PostConstruct]` 	| A method marked with this attribute will fire after the instance object is fully constructed, and injected. |
 
 ## Saweet! How do I get started?
