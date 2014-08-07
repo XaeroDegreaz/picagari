@@ -1,56 +1,55 @@
 ﻿<!DOCTYPE html>
 <html>
 
-  <head>
-    <meta charset='utf-8' />
-    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
-    <meta name="description" content="Picagari : A zero-configuration contexts and dependency injection (CDI) library for .Net" />
+    <head>
+        <meta charset='utf-8' />
+        <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+        <meta name="description" content="Picagari : A zero-configuration contexts and dependency injection (CDI) library for .Net" />
 
-    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+        <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>Picagari</title>
-  </head>
+        <title>Picagari</title>
+    </head>
 
-  <body>
+    <body>
 
-    <!-- HEADER -->
-    <div id="header_wrap" class="outer">
-        <header class="inner">
-          <a id="forkme_banner" href="https://github.com/XaeroDegreaz/picagari">View on GitHub</a>
+        <!-- HEADER -->
+        <div id="header_wrap" class="outer">
+            <header class="inner">
+                <a id="forkme_banner" href="https://github.com/XaeroDegreaz/picagari">View on GitHub</a>
 
-          <h1 id="project_title">Picagari</h1>
-          <h2 id="project_tagline">A zero-configuration contexts and dependency injection (CDI) library for .Net</h2>
+                <h1 id="project_title">Picagari</h1>
+                <h2 id="project_tagline">A zero-configuration contexts and dependency injection (CDI) library for .Net</h2>
 
-            <section id="downloads">
-              <a class="zip_download_link" href="https://github.com/XaeroDegreaz/picagari/zipball/master">Download this project as a .zip file</a>
-              <a class="tar_download_link" href="https://github.com/XaeroDegreaz/picagari/tarball/master">Download this project as a tar.gz file</a>
-            </section>
-        </header>
-    </div>
+                <section id="downloads">
+                    <a class="zip_download_link" href="https://github.com/XaeroDegreaz/picagari/zipball/master">Download this project as a .zip file</a>
+                    <a class="tar_download_link" href="https://github.com/XaeroDegreaz/picagari/tarball/master">Download this project as a tar.gz file</a>
+                </section>
+            </header>
+        </div>
 
-    <!-- MAIN CONTENT -->
-    <div id="main_content_wrap" class="outer">
-      <section id="main_content" class="inner">
-        <h1>
-<a name="picagari---the-dependency-injection-library-for-net--mono" class="anchor" href="#picagari---the-dependency-injection-library-for-net--mono"><span class="octicon octicon-link"></span></a>Picagari - The Dependency Injection Library for .Net / Mono</h1>
+        <!-- MAIN CONTENT -->
+        <div id="main_content_wrap" class="outer">
+            <section id="main_content" class="inner">
+             
 
-<h2>
-<a name="synopsis" class="anchor" href="#synopsis"><span class="octicon octicon-link"></span></a>Synopsis</h2>
+                <h2>
+                    <a name="synopsis" class="anchor" href="#synopsis"><span class="octicon octicon-link"></span></a>Synopsis</h2>
 
-<p>Picagari (Malay for <em>syringe</em>) is an Inversion of Control (IoC), Contexts and Dependency Injection (CDI) library for .Net / Mono.
-A high level example of what Picagari does would be to allow developers to quickly create classes, without having to create factories for constructing objects, or repeatedly having to manually construct objects, and their dependencies (so on, and so forth). It also helps with the decoupling of interfaces and their implementations.</p>
+                <p>Picagari (Malay for <em>syringe</em>) is an Inversion of Control (IoC), Contexts and Dependency Injection (CDI) library for .Net / Mono.
+                    A high level example of what Picagari does would be to allow developers to quickly create classes, without having to create factories for constructing objects, or repeatedly having to manually construct objects, and their dependencies (so on, and so forth). It also helps with the decoupling of interfaces and their implementations.</p>
 
-<p>There are no configurations to write -- just start by adding the <code>[Inject]</code> attributes to your fields / properties, and then use <code>Bootstrap.Start</code> on the object that owns them.</p>
+                <p>There are no configurations to write -- just start by adding the <code>[Inject]</code> attributes to your fields / properties, and then use <code>Picagari.Start</code> on the object that owns them.</p>
 
-<h2>
-<a name="basic-code-example" class="anchor" href="#basic-code-example"><span class="octicon octicon-link"></span></a>Basic Code Example</h2>
+                <h2>
+                    <a name="basic-code-example" class="anchor" href="#basic-code-example"><span class="octicon octicon-link"></span></a>Basic Code Example</h2>
 
-<p>With some clever usage of the <code>[Inject]</code> attribute on your fields and properties you can:</p>
+                <p>With some clever usage of the <code>[Inject]</code> attribute on your fields and properties you can:</p>
 
-<h4>
-<a name="stop-doing-this" class="anchor" href="#stop-doing-this"><span class="octicon octicon-link"></span></a>Stop doing this:</h4>
+                <h4>
+                    <a name="stop-doing-this" class="anchor" href="#stop-doing-this"><span class="octicon octicon-link"></span></a>Stop doing this:</h4>
 
-<div class="highlight highlight-C#"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Pilot</span>
+                <div class="highlight highlight-C#"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Pilot</span>
 <span class="p">{</span>
     <span class="c1">//# Dependency</span>
     <span class="k">public</span> <span class="n">SpaceShip</span> <span class="n">SpaceShip</span><span class="p">;</span>
@@ -74,10 +73,10 @@ A high level example of what Picagari does would be to allow developers to quick
 <span class="p">}</span>
 </pre></div>
 
-<h4>
-<a name="and-stop-doing-this" class="anchor" href="#and-stop-doing-this"><span class="octicon octicon-link"></span></a>And stop doing this:</h4>
+                <h4>
+                    <a name="and-stop-doing-this" class="anchor" href="#and-stop-doing-this"><span class="octicon octicon-link"></span></a>And stop doing this:</h4>
 
-<div class="highlight highlight-C#"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Pilot</span>
+                <div class="highlight highlight-C#"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Pilot</span>
 <span class="p">{</span>
     <span class="c1">//# Dependency</span>
     <span class="k">public</span> <span class="n">SpaceShip</span> <span class="n">SpaceShip</span><span class="p">;</span>
@@ -95,11 +94,11 @@ A high level example of what Picagari does would be to allow developers to quick
 <span class="p">}</span>
 </pre></div>
 
-<h1>
-<a name="now-do-this" class="anchor" href="#now-do-this"><span class="octicon octicon-link"></span></a>Now, do <em>this:</em>
-</h1>
+                <h1>
+                    <a name="now-do-this" class="anchor" href="#now-do-this"><span class="octicon octicon-link"></span></a>Now, do <em>this:</em>
+                </h1>
 
-<div class="highlight highlight-C#"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Pilot</span>
+                <div class="highlight highlight-C#"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Pilot</span>
 <span class="p">{</span>
 <span class="na">    [Inject]</span>
     <span class="k">public</span> <span class="n">SpaceShip</span> <span class="n">SpaceShip</span><span class="p">;</span>
@@ -109,16 +108,16 @@ A high level example of what Picagari does would be to allow developers to quick
     <span class="k">public</span> <span class="nf">Pilot</span><span class="p">()</span>
     <span class="p">{</span>
         <span class="c1">//# Construct this class' dependencies (and dependencies' dependencies recursively)</span>
-        <span class="n">Bootstrap</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="n">Picagari</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
         <span class="n">Uniform</span><span class="p">.</span><span class="n">ZipUp</span><span class="p">();</span>
         <span class="n">SpaceShip</span><span class="p">.</span><span class="n">FlyOut</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 
-<p>You can also use <code>Bootstrap.Start()</code> with other objects:</p>
+                <p>You can also use <code>Picagari.Start()</code> with other objects:</p>
 
-<div class="highlight highlight-C#"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Pilot</span>
+                <div class="highlight highlight-C#"><pre><span class="k">public</span> <span class="k">class</span> <span class="nc">Pilot</span>
 <span class="p">{</span>
     <span class="c1">//# Dependency</span>
     <span class="k">public</span> <span class="n">SpaceShip</span> <span class="n">SpaceShip</span><span class="p">;</span>
@@ -127,104 +126,112 @@ A high level example of what Picagari does would be to allow developers to quick
 
     <span class="k">public</span> <span class="nf">Pilot</span><span class="p">()</span>
     <span class="p">{</span>
-        <span class="n">Bootstrap</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
-        <span class="n">SpaceShip</span> <span class="p">=</span> <span class="n">Bootstrap</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span> <span class="k">new</span> <span class="n">SpaceShip</span><span class="p">()</span> <span class="p">);</span>
+        <span class="n">Picagari</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span> <span class="k">this</span> <span class="p">);</span>
+        <span class="n">SpaceShip</span> <span class="p">=</span> <span class="n">Picagari</span><span class="p">.</span><span class="n">Start</span><span class="p">(</span> <span class="k">new</span> <span class="n">SpaceShip</span><span class="p">()</span> <span class="p">);</span>
         <span class="n">Uniform</span><span class="p">.</span><span class="n">ZipUp</span><span class="p">();</span>
         <span class="n">SpaceShip</span><span class="p">.</span><span class="n">FlyOut</span><span class="p">();</span>
     <span class="p">}</span>
 <span class="p">}</span>
 </pre></div>
 
-<h2>
-<a name="attributes" class="anchor" href="#attributes"><span class="octicon octicon-link"></span></a>Attributes</h2>
+                <h2>
+                    <a name="attributes" class="anchor" href="#attributes"><span class="octicon octicon-link"></span></a>Attributes</h2>
 
-<table>
-<thead><tr>
-<th></th>
-<th></th>
-</tr></thead>
-<tbody>
-<tr>
-<td><code>[Inject]</code></td>
-<td>Constructs, the member, and any of the member's <code>[Inject]</code> marked dependencies recursively.</td>
-</tr>
-<tr>
-<td><code>[Produces]</code></td>
-<td>Used on a method, you tell Picagari that you want to use that method for producing the object before you inject it. This is good for when you want to use some logic to decide which implementation of a certain object type you'd like to return (see the <a href="https://github.com/XaeroDegreaz/picagari/tree/master/Picagari.Examples/KlingonsRule">Klingons Rule</a> example).</td>
-</tr>
-<tr>
-<td><code>[Default]</code></td>
-<td>Classes marked with this attribute will be injected by default should there be more than one.implementation of a class, or interface. This ia required on at least one of those classes.</td>
-</tr>
-<tr>
-<td><code>[ApplicationScoped]</code></td>
-<td>Classes marked with this attribute will only ever be constructed once. They essentially become reusable singletons, that can be injected over, and over but keep the same reference.</td>
-</tr>
-<tr>
-<td><code>[PostConstruct]</code></td>
-<td>A method marked with this attribute will fire after the instance object is fully constructed, and injected.</td>
-</tr>
-</tbody>
-</table><h2>
-<a name="saweet-how-do-i-get-started" class="anchor" href="#saweet-how-do-i-get-started"><span class="octicon octicon-link"></span></a>Saweet! How do I get started?</h2>
+                <table>
+                    <thead><tr>
+                               <th></th>
+                               <th></th>
+                           </tr></thead>
+                    <tbody>
+                        <tr>
+                            <td><code>[Inject]</code></td>
+                            <td>Constructs, the member, and any of the member's <code>[Inject]</code> marked dependencies recursively.</td>
+                        </tr>
+                        <tr>
+                            <td><code>[Produces]</code></td>
+                            <td>Used on a method, you tell Picagari that you want to use that method for producing the object before you inject it. This is good for when you want to use some logic to decide which implementation of a certain object type you'd like to return (see the <a href="https://github.com/XaeroDegreaz/picagari/tree/master/Picagari.Examples/KlingonsRule">Klingons Rule</a> example).</td>
+                        </tr>
+                        <tr>
+                            <td><code>[Default]</code></td>
+                            <td>Classes marked with this attribute will be injected by default should there be more than one.implementation of a class, or interface. This ia required on at least one of those classes.</td>
+                        </tr>
+                        <tr>
+                            <td><code>[ApplicationScoped]</code></td>
+                            <td>Classes marked with this attribute will only ever be constructed once. They essentially become reusable singletons, that can be injected over, and over but keep the same reference.</td>
+                        </tr>
+                        <tr>
+                            <td><code>(MVC Only) [SessionScoped]</code></td>
+                            <td>Similar to ApplicationScoped, classes marked with this attribute will only constructed once, and will be reused throughout a browser session.</td>
+                        </tr>
+                        <tr>
+                            <td><code>(MVC Only) [RequestScoped]</code></td>
+                            <td>Classes marked with this scope attribute will only be constructed once, and reused throughout a single request (page load).</td>
+                        </tr>
+                        <tr>
+                            <td><code>[PostConstruct]</code></td>
+                            <td>A method marked with this attribute will fire after the instance object is fully constructed, and injected.</td>
+                        </tr>
+                    </tbody>
+                </table><h2>
+                            <a name="saweet-how-do-i-get-started" class="anchor" href="#saweet-how-do-i-get-started"><span class="octicon octicon-link"></span></a>Saweet! How do I get started?</h2>
 
-<p>The usual methods:</p>
+                <p>The usual methods:</p>
 
-<ul>
-<li>Download the <a href="https://github.com/XaeroDegreaz/picagari/releases">latest binaries</a>, and reference them in your project.</li>
-<li>Checkout the repo, and build from source, or reference the project.</li>
-<li>Read the <a href="https://github.com/XaeroDegreaz/picagari/wiki">Wiki</a>.</li>
-<li>Look at some of the <a href="https://github.com/XaeroDegreaz/picagari/tree/master/Picagari.Examples">example classes</a>.</li>
-<li>Inject away!</li>
-</ul><h2>
-<a name="motivation-for-the-project" class="anchor" href="#motivation-for-the-project"><span class="octicon octicon-link"></span></a>Motivation for the project.</h2>
+                <ul>
+                    <li>Download the <a href="https://github.com/XaeroDegreaz/picagari/releases">latest binaries</a>, and reference them in your project.</li>
+                    <li>Checkout the repo, and build from source, or reference the project.</li>
+                    <li>Read the <a href="https://github.com/XaeroDegreaz/picagari/wiki">Wiki</a>.</li>
+                    <li>Look at some of the <a href="https://github.com/XaeroDegreaz/picagari/tree/master/Picagari.Examples">example classes</a>.</li>
+                    <li>Inject away!</li>
+                </ul><h2>
+                         <a name="motivation-for-the-project" class="anchor" href="#motivation-for-the-project"><span class="octicon octicon-link"></span></a>Motivation for the project.</h2>
 
-<p>tl;dr - Because IoC dependency injection is completely awesome.</p>
+                <p>tl;dr - Because IoC dependency injection is completely awesome.</p>
 
-<p>I started working in a pure Java shop that uses Java's CDI framework, and I was fascinated by a number of things:</p>
+                <p>I started working in a pure Java shop that uses Java's CDI framework, and I was fascinated by a number of things:</p>
 
-<ul>
-<li>How powerful it was.</li>
-<li>How much time was saved.</li>
-<li>How reusable my code became, as I was basically able to compartmentalize &amp; isolate modules of code, and just inject them freely into any object that required them.</li>
-</ul><p>I began looking around to see if there were any such frameworks for .Net, the <em>true</em> language of love. I found a few really good ones, namely:</p>
+                <ul>
+                    <li>How powerful it was.</li>
+                    <li>How much time was saved.</li>
+                    <li>How reusable my code became, as I was basically able to compartmentalize &amp; isolate modules of code, and just inject them freely into any object that required them.</li>
+                </ul><p>I began looking around to see if there were any such frameworks for .Net, the <em>true</em> language of love. I found a few really good ones, namely:</p>
 
-<ul>
-<li><a href="http://www.ninject.org/">Ninject</a></li>
-<li><a href="http://structuremap.github.io/structuremap/">StructureMap</a></li>
-</ul><p>However, my problem with these frameworks is that they rely on some initial configuration, and even more configuration as your project grows. While these frameworks do what they are supposed to do, I felt that they required far too much configuration, and the learning curve was just too steep for something that could be done in a more simple way.</p>
+                <ul>
+                    <li><a href="http://www.ninject.org/">Ninject</a></li>
+                    <li><a href="http://structuremap.github.io/structuremap/">StructureMap</a></li>
+                </ul><p>However, my problem with these frameworks is that they rely on some initial configuration, and even more configuration as your project grows. While these frameworks do what they are supposed to do, I felt that they required far too much configuration, and the learning curve was just too steep for something that could be done in a more simple way.</p>
 
-<p>Picagari uses absolutely no configurations of any kind. I've followed the the experience that I've had with Java's CDI framework, and stripped away configuration.</p>
+                <p>Picagari uses absolutely no configurations of any kind. I've followed the the experience that I've had with Java's CDI framework, and stripped away configuration.</p>
 
-<h2>
-<a name="tests" class="anchor" href="#tests"><span class="octicon octicon-link"></span></a>Tests</h2>
+                <h2>
+                    <a name="tests" class="anchor" href="#tests"><span class="octicon octicon-link"></span></a>Tests</h2>
 
-<p>There are NUnit tests available in the solution. They test a variety of things from feature functionality, to infinite inject recursion issues (such as injecting the same type into itself...).</p>
+                <p>There are NUnit tests available in the solution. They test a variety of things from feature functionality, to infinite inject recursion issues (such as injecting the same type into itself...).</p>
 
-<h2>
-<a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute?</h2>
+                <h2>
+                    <a name="contribute" class="anchor" href="#contribute"><span class="octicon octicon-link"></span></a>Contribute?</h2>
 
-<ul>
-<li>If you'd like to contribute to the project, simply fork it, hack it, and send a merge request.</li>
-<li>Post bugs / suggestions in the <a href="https://github.com/XaeroDegreaz/picagari/issues">issue tracker</a>.</li>
-</ul><h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
+                <ul>
+                    <li>If you'd like to contribute to the project, simply fork it, hack it, and send a merge request.</li>
+                    <li>Post bugs / suggestions in the <a href="https://github.com/XaeroDegreaz/picagari/issues">issue tracker</a>.</li>
+                </ul><h2>
+                         <a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
 
-<p>I'm not a lawyer, so in plain English:</p>
+                <p>I'm not a lawyer, so in plain English:</p>
 
-<p>You can use this library in any project, be it personal, commercial or open source.</p>
-      </section>
-    </div>
+                <p>You can use this library in any project, be it personal, commercial or open source.</p>
+            </section>
+        </div>
 
-    <!-- FOOTER  -->
-    <div id="footer_wrap" class="outer">
-      <footer class="inner">
-        <p class="copyright">Picagari maintained by <a href="https://github.com/XaeroDegreaz">XaeroDegreaz</a></p>
-        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
-      </footer>
-    </div>
+        <!-- FOOTER  -->
+        <div id="footer_wrap" class="outer">
+            <footer class="inner">
+                <p class="copyright">Picagari maintained by <a href="https://github.com/XaeroDegreaz">XaeroDegreaz</a></p>
+                <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+            </footer>
+        </div>
 
     
 
-  </body>
+    </body>
 </html>
