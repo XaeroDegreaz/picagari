@@ -215,9 +215,10 @@ namespace Picagari
         private static void setInjectedType( ref Type type, InjectAttribute injectAttribute )
         {
             var initialType = type;
-            var allImplementations = _knownTypes.Where( t => t != initialType && initialType.IsAssignableFrom( t ) );
+            var allImplementations = _knownTypes.Where( t => t != initialType && initialType.IsAssignableFrom( t ) ).ToArray();
+            var implementationCount = allImplementations.Count();
 
-            if ( allImplementations.Count() > 1 )
+            if ( implementationCount > 1 )
             {
                 if ( injectAttribute.AlternateType != null )
                 {
@@ -234,6 +235,10 @@ namespace Picagari
 
                     type = defaultImplementation;
                 }
+            }
+            else if ( implementationCount == 1 )
+            {
+                type = allImplementations.First();
             }
         }
 
@@ -343,7 +348,6 @@ namespace Picagari
 
         private static void scanHierarchy( Type type )
         {
-            Assembly[] assemblies = System.AppDomain.CurrentDomain.GetAssemblies();
             var newTypes = Assembly.GetAssembly( type )
                                    .GetTypes()
                                    .Where( t => !_knownTypes.Contains( t ) )
