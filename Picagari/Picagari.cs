@@ -279,7 +279,7 @@ namespace Picagari
                 case MemberTypes.Field:
                     return ( (FieldInfo) member ).GetValue( parent );
                 case MemberTypes.Property:
-                    return ( (PropertyInfo) member ).GetValue( parent );
+                    return ( (PropertyInfo) member ).GetValue( parent, null );
             }
 
             return null;
@@ -293,7 +293,7 @@ namespace Picagari
                     ( (FieldInfo) member ).SetValue( parent, value );
                     break;
                 case MemberTypes.Property:
-                    ( (PropertyInfo) member ).SetValue( parent, value );
+                    ( (PropertyInfo) member ).SetValue( parent, value, null );
                     break;
             }
         }
@@ -378,7 +378,8 @@ namespace Picagari
 
             try
             {
-                var postConstructDelegate = (PostConstruct) postConstructMethod.CreateDelegate( typeof ( PostConstruct ), value );
+
+                var postConstructDelegate = (PostConstruct) Delegate.CreateDelegate( typeof ( PostConstruct ), postConstructMethod );
                 postConstructContainer.AddDelegateToPostConstruct( postConstructDelegate );
             }
             catch ( Exception e )
@@ -389,7 +390,7 @@ namespace Picagari
 
         private static T getAttribute<T>( MemberInfo member ) where T : Attribute
         {
-            return (T) member.GetCustomAttribute( typeof ( T ), false );
+            return (T) member.GetCustomAttributes( typeof ( T ), false ).FirstOrDefault();
         }
     }
 }
