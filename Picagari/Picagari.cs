@@ -5,6 +5,7 @@ using System.Reflection;
 using PicagariCore.Attributes;
 using PicagariCore.Exceptions;
 using PicagariCore.ScopeObjects;
+using PostConstruct = PicagariCore.PostConstructContainer.PostConstruct;
 
 namespace PicagariCore
 {
@@ -384,7 +385,7 @@ namespace PicagariCore
             try
             {
 
-                var postConstructDelegate = (PostConstructContainer.PostConstruct) Delegate.CreateDelegate( typeof ( PostConstructContainer.PostConstruct ), postConstructMethod );
+                var postConstructDelegate = (PostConstruct) Delegate.CreateDelegate( typeof ( PostConstruct ), value, postConstructMethod );
                 postConstructContainer.AddDelegateToPostConstruct( postConstructDelegate );
             }
             catch ( Exception e )
