@@ -1,6 +1,6 @@
-using Picagari.Attributes;
+using PicagariCore.Attributes;
 
-namespace Picagari.Examples.KlingonsRule
+namespace PicagariCore.Examples.KlingonsRule
 {
     public interface IShip
     {

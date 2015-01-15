@@ -1,10 +1,8 @@
 ﻿using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
-using Picagari.MVC;
-using Picagari.MVC.Examples;
 
-namespace Picagari.Examples.MVC
+namespace PicagariMVC.Examples
 {
     public class MvcApplication : HttpApplication
     {

@@ -1,7 +1,7 @@
 ﻿using log4net;
-using Picagari.Attributes;
+using PicagariCore.Attributes;
 
-namespace Picagari.Tests.Helpers
+namespace PicagariCore.Tests.Helpers
 {
     /// <summary>
     /// For the sake of not having lots of class files littered everywhere,

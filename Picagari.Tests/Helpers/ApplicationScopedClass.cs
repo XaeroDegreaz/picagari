@@ -1,6 +1,6 @@
-﻿using Picagari.Attributes;
+﻿using PicagariCore.Attributes;
 
-namespace Picagari.Tests.Helpers
+namespace PicagariCore.Tests.Helpers
 {
     [ApplicationScoped]
     internal class ApplicationScopedClass {}

@@ -4,14 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{E711068D-3EF9-4D48-A3A8-037024C568AC}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{8CEDC2E9-2520-4B09-B798-0ACC9B731570}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Picagari</RootNamespace>
-    <AssemblyName>Picagari</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <RootNamespace>PicagariCore.Examples</RootNamespace>
+    <AssemblyName>PicagariCore.Examples</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,29 +27,26 @@
     <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>0</WarningLevel>
-    <DocumentationFile>bin\Release\Picagari.xml</DocumentationFile>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attributes\ApplicationScopedAttribute.cs" />
-    <Compile Include="Attributes\DefaultAttribute.cs" />
-    <Compile Include="Attributes\PostConstructAttribute.cs" />
-    <Compile Include="Attributes\ProducesAttribute.cs" />
-    <Compile Include="Attributes\SessionScopedAttribute.cs" />
-    <Compile Include="Attributes\RequestScopedAttribute.cs" />
-    <Compile Include="Picagari.cs" />
-    <Compile Include="InjectionPoint.cs" />
-    <Compile Include="Attributes\InjectAttribute.cs" />
-    <Compile Include="Exceptions\PicagariException.cs" />
-    <Compile Include="PostConstructContainer.cs" />
+    <Compile Include="KlingonsRule\IHumanoidPilot.cs" />
+    <Compile Include="KlingonsRule\InSpace.cs" />
+    <Compile Include="KlingonsRule\IShip.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ScopeObjects\RequestScopedKey.cs" />
-    <Compile Include="ScopeObjects\ScopeKey.cs" />
-    <Compile Include="ScopeObjects\SessionScopedKey.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Picagari\PicagariCore.csproj">
+      <Project>{E711068D-3EF9-4D48-A3A8-037024C568AC}</Project>
+      <Name>PicagariCore</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

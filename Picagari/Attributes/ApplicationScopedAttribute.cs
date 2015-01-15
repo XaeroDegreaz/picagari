@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Picagari.Attributes
+namespace PicagariCore.Attributes
 {
     /// <summary>
     /// This attribute will ensure that classes that use it will only ever be

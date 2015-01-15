@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Picagari.Attributes
+namespace PicagariCore.Attributes
 {
     /// <summary>
     /// A no-argument method marked with this attribute will be called after its

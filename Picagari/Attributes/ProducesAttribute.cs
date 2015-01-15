@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Picagari.Attributes
+namespace PicagariCore.Attributes
 {
     /// <summary>
     /// Methods with this annotation will be used to manually instantiate

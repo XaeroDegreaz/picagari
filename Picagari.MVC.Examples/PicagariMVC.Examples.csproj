@@ -11,8 +11,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Picagari.MVC.Examples</RootNamespace>
-    <AssemblyName>Picagari.MVC.Examples</AssemblyName>
+    <RootNamespace>PicagariMVC.Examples</RootNamespace>
+    <AssemblyName>PicagariMVC.Examples</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
@@ -99,13 +99,13 @@
     <Folder Include="Views\Picagari\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Picagari.MVC\Picagari.MVC.csproj">
+    <ProjectReference Include="..\Picagari.MVC\PicagariMVC.csproj">
       <Project>{F19DCEBB-D7F9-4B8A-ADC7-622CE78AC0BF}</Project>
-      <Name>Picagari.MVC</Name>
+      <Name>PicagariMVC</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Picagari\Picagari.csproj">
+    <ProjectReference Include="..\Picagari\PicagariCore.csproj">
       <Project>{E711068D-3EF9-4D48-A3A8-037024C568AC}</Project>
-      <Name>Picagari</Name>
+      <Name>PicagariCore</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

@@ -1,7 +1,7 @@
 ﻿using System.Reflection;
-using Picagari.Attributes;
+using PicagariCore.Attributes;
 
-namespace Picagari
+namespace PicagariCore
 {
     /// <summary>
     /// An instance of this class will be passed to any producers you specify.

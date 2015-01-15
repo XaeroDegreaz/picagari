@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
-using Picagari.Attributes;
-using Picagari.ScopeObjects;
-using Picagari.Tests.Helpers;
+using PicagariCore.Attributes;
+using PicagariCore.ScopeObjects;
+using PicagariCore.Tests.Helpers;
 
-namespace Picagari.Tests
+namespace PicagariCore.Tests
 {
     /// <summary>
     /// This test fixture applies to both RequestScoped and SessionScoped classes

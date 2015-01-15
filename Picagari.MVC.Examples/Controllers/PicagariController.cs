@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Web.Mvc;
-using Picagari.Attributes;
-using Picagari.MVC.Examples.Models;
+using PicagariCore.Attributes;
+using PicagariMVC.Examples.Models;
 
-namespace Picagari.Examples.MVC.Controllers
+namespace PicagariMVC.Examples.Controllers
 {
     public class PicagariController : Controller
     {

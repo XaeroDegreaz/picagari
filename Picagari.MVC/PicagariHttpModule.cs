@@ -3,10 +3,11 @@ using System.Web;
 using System.Web.Mvc;
 using System.Web.Routing;
 using System.Web.SessionState;
-using Picagari.Attributes;
-using Picagari.ScopeObjects;
+using PicagariCore;
+using PicagariCore.Attributes;
+using PicagariCore.ScopeObjects;
 
-namespace Picagari.MVC
+namespace PicagariMVC
 {
     public class PicagariHttpModule : IHttpModule
     {

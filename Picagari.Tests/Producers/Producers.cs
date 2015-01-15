@@ -1,10 +1,10 @@
 ﻿using log4net;
 using log4net.Config;
-using Picagari.Attributes;
+using PicagariCore.Attributes;
 
 [assembly: XmlConfigurator( Watch = true )]
 
-namespace Picagari.Tests.Producers
+namespace PicagariCore.Tests.Producers
 {
     internal class Producers
     {

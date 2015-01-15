@@ -2,20 +2,20 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picagari", "Picagari\Picagari.csproj", "{E711068D-3EF9-4D48-A3A8-037024C568AC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicagariCore", "Picagari\PicagariCore.csproj", "{E711068D-3EF9-4D48-A3A8-037024C568AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picagari.Tests", "Picagari.Tests\Picagari.Tests.csproj", "{D7FC9F19-2538-454F-B266-71DBDF961997}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicagariCore.Tests", "Picagari.Tests\PicagariCore.Tests.csproj", "{D7FC9F19-2538-454F-B266-71DBDF961997}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A3183DC4-5751-478B-BBB1-96498605BB1A}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picagari.Examples", "Picagari.Examples\Picagari.Examples.csproj", "{8CEDC2E9-2520-4B09-B798-0ACC9B731570}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicagariCore.Examples", "Picagari.Examples\PicagariCore.Examples.csproj", "{8CEDC2E9-2520-4B09-B798-0ACC9B731570}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picagari.MVC", "Picagari.MVC\Picagari.MVC.csproj", "{F19DCEBB-D7F9-4B8A-ADC7-622CE78AC0BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicagariMVC", "Picagari.MVC\PicagariMVC.csproj", "{F19DCEBB-D7F9-4B8A-ADC7-622CE78AC0BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Picagari.MVC.Examples", "Picagari.MVC.Examples\Picagari.MVC.Examples.csproj", "{67DC37C0-1FA4-49D3-9EE5-126E03E4C20D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PicagariMVC.Examples", "Picagari.MVC.Examples\PicagariMVC.Examples.csproj", "{67DC37C0-1FA4-49D3-9EE5-126E03E4C20D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

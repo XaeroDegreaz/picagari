@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Picagari.Attributes;
+﻿using PicagariCore.Attributes;
 
-namespace Picagari.Tests.Helpers
+namespace PicagariCore.Tests.Helpers
 {
     [RequestScoped]
     class RequestScopedClass

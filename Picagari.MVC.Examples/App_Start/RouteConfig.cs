@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using System.Web.Routing;
 
-namespace Picagari.MVC.Examples
+namespace PicagariMVC.Examples
 {
     public class RouteConfig
     {

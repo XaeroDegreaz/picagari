@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Web;
-using Picagari.Attributes;
+﻿using PicagariCore.Attributes;
 
-namespace Picagari.MVC.Examples.Models
+namespace PicagariMVC.Examples.Models
 {
     [ApplicationScoped]
     public class ApplicationScopedClass

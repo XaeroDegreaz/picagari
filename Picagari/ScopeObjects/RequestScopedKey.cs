@@ -1,4 +1,4 @@
-﻿namespace Picagari.ScopeObjects
+﻿namespace PicagariCore.ScopeObjects
 {
     public class RequestScopedKey : ScopeKey
     {

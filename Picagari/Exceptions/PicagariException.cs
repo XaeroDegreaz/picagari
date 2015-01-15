@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Picagari.Exceptions
+namespace PicagariCore.Exceptions
 {
     /// <summary>
     ///     Produces good information about problems when injecting members.

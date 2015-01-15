@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Picagari.Attributes
+namespace PicagariCore.Attributes
 {
     /// <summary>
     /// Mark a field or property for injection into the current class.

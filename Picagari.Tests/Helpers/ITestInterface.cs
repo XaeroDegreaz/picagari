@@ -1,4 +1,4 @@
-﻿namespace Picagari.Tests.Helpers
+﻿namespace PicagariCore.Tests.Helpers
 {
     public interface ITestInterface
     {

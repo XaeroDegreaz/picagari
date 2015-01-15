@@ -1,4 +1,4 @@
-namespace Picagari
+namespace PicagariCore
 {
     internal sealed class PostConstructContainer
     {

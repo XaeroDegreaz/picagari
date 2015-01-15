@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Picagari.Examples.KlingonsRule
+namespace PicagariCore.Examples.KlingonsRule
 {
     public interface IHumanoidPilot
     {

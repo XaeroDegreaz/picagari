@@ -1,6 +1,6 @@
-﻿using Picagari.Attributes;
+﻿using PicagariCore.Attributes;
 
-namespace Picagari.Tests.Helpers
+namespace PicagariCore.Tests.Helpers
 {
     /// <summary>
     /// Various class combinations that eventually recurse upon themselves.

@@ -2,12 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Picagari.Attributes;
-using Picagari.Exceptions;
-using Picagari.ScopeObjects;
-using PostConstruct = Picagari.PostConstructContainer.PostConstruct;
+using PicagariCore.Attributes;
+using PicagariCore.Exceptions;
+using PicagariCore.ScopeObjects;
 
-namespace Picagari
+namespace PicagariCore
 {
     /// <summary>
     /// The Picagari class handles injecting all marked fields and properties
@@ -385,7 +384,7 @@ namespace Picagari
             try
             {
 
-                var postConstructDelegate = (PostConstruct) Delegate.CreateDelegate( typeof ( PostConstruct ), postConstructMethod );
+                var postConstructDelegate = (PostConstructContainer.PostConstruct) Delegate.CreateDelegate( typeof ( PostConstructContainer.PostConstruct ), postConstructMethod );
                 postConstructContainer.AddDelegateToPostConstruct( postConstructDelegate );
             }
             catch ( Exception e )

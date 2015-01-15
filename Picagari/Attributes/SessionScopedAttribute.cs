@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace Picagari.Attributes
+namespace PicagariCore.Attributes
 {
     [AttributeUsage( AttributeTargets.Class )]
     public class SessionScopedAttribute : Attribute {}
