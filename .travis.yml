@@ -12,4 +12,4 @@ install:
  
 script:
  - xbuild CI.proj
- - nunit-console ./Picagari.Tests/bin/Debug/Picagari.Tests.dll
+ - nunit-console ./Picagari.Tests/bin/Debug/PicagariCore.Tests.dll
