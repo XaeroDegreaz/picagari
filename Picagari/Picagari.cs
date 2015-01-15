@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using Picagari.Attributes;
 using Picagari.Exceptions;
 using Picagari.ScopeObjects;
@@ -35,7 +34,10 @@ namespace Picagari
         public static T Start<T>( T obj )
         {
             var postConstructContainer = new PostConstructContainer();
-            performFullAssemblyScan();
+            if ( _knownTypes.Count == 0 )
+            {
+                performFullAssemblyScan();
+            }
             injectMembers( obj, getInjectableMembers( obj ), new List<Type>(), postConstructContainer );
             postConstructContainer.InvokePostConstruct();
             return obj;
